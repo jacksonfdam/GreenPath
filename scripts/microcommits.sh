@@ -37,7 +37,7 @@ commit() {
 
 commit "chore: scaffold Next.js app with TypeScript and Tailwind" \
   package.json package-lock.json tsconfig.json next.config.mjs \
-  postcss.config.mjs tailwind.config.ts .eslintrc.json .gitignore app/globals.css
+  postcss.config.mjs tailwind.config.ts eslint.config.mjs .gitignore app/globals.css
 
 commit "feat: add site constants and content types" \
   lib/site.ts lib/types.ts
