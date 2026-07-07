@@ -4,10 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const LINKS = [
+  { href: "/setup", label: "Setup" },
   { href: "/codelabs", label: "Codelabs" },
   { href: "/progress", label: "Progress" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/terminal-101", label: "Terminal 101" },
+  { href: "/ai-help", label: "AI help" },
   { href: "/resources", label: "Resources" },
 ];
 
