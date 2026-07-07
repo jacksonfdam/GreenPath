@@ -12,23 +12,35 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  if (!getCodelabSlugs().includes(params.slug)) return {};
-  const { frontmatter } = getCodelabSource(params.slug);
+  const { slug } = await params;
+  if (!getCodelabSlugs().includes(slug)) return {};
+  const { frontmatter } = getCodelabSource(slug);
   return { title: frontmatter.title, description: frontmatter.summary };
 }
 
-export default async function CodelabPage({ params }: { params: { slug: string } }) {
-  if (!getCodelabSlugs().includes(params.slug)) {
+export default async function CodelabPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  if (!getCodelabSlugs().includes(slug)) {
     notFound();
   }
 
-  const { content, frontmatter, steps } = getCodelabSource(params.slug);
+  const { content, frontmatter, steps } = getCodelabSource(slug);
 
   const { content: mdx } = await compileMDX({
     source: content,
     components: mdxComponents,
+    options: {
+      // Content is first-party and trusted, so re-enable MDX expressions
+      // (component props like minutes={20} and code-block children) that
+      // next-mdx-remote v6 blocks by default.
+      blockJS: false,
+    },
   });
 
   return (
