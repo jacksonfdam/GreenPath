@@ -1,0 +1,103 @@
+---
+week: 3
+slug: "multiverse-api"
+title: "The Multiverse API"
+summary: "Test below the interface, where JSON is a JavaScript object wearing a coat."
+estimatedMinutes: 180
+prerequisites: ["Week 1 done", "Comfort reading JSON", "Postman or a browser"]
+outcomes:
+  - "Send HTTP requests and read the responses with intent"
+  - "Write real assertions against a live API and test the unhappy path"
+artifact:
+  name: "multiverse-api-tests collection"
+  where: "An exported Postman collection in a public repo"
+---
+
+<Step id="w3-s1" title="HTTP and JSON, the practical version" minutes={30}>
+
+APIs are how the front end you already know talks to the back end you have not met. This is where your JavaScript background quietly pays off, because JSON is basically a JavaScript object that put on a coat to go outside.
+
+The parts you need. Methods: `GET` reads, `POST` creates, `PUT` updates, `DELETE` removes. Status codes: `200` means fine, `400` means you sent something wrong, `401` means you are not allowed, `404` means it is not there, `500` means the server broke. REST is just the convention that ties tidy URLs to those methods. Keep it practical and resist the urge to read a specification for fun.
+
+<Callout type="why">
+Testing at the API level finds problems before they reach a screen, and it is faster and steadier than clicking. It is also where a lot of QA automation jobs actually spend their time.
+</Callout>
+
+<Checkpoint id="w3-s1">You can say what `GET`, `POST`, `404`, and `500` mean without looking them up.</Checkpoint>
+
+</Step>
+
+<Step id="w3-s2" title="Install Postman" minutes={20}>
+
+Postman is the tool for poking at APIs without writing a program each time. Download it from <DocLink href="https://www.postman.com/downloads/">postman.com/downloads</DocLink>. It is a normal Mac app: open the file and drag it to Applications. If you would rather not install anything, the web version works in a browser and needs no terminal at all.
+
+Then skim the basics at the <DocLink href="https://learning.postman.com/">Postman Learning Center</DocLink>. Enough to know what a request and a collection are. You will learn the rest by doing it.
+
+<MacNote>
+No terminal needed for any of this step. If macOS warns that the app was downloaded from the internet, that prompt appears for every app, and Postman is a well known one. Open it and carry on.
+</MacNote>
+
+<Checkpoint id="w3-s2">Postman is open, as the app or the web version.</Checkpoint>
+
+</Step>
+
+<Step id="w3-s3" title="Call an API" minutes={30}>
+
+Time to point it at something. Two public APIs need no key and no login, which makes them perfect first targets: the <DocLink href="https://rickandmortyapi.com/documentation">Rick and Morty API</DocLink> and <DocLink href="https://pokeapi.co/docs/v2">PokeAPI</DocLink>.
+
+In Postman, make a new Collection and call it something you will recognise. Add a `GET` request to `https://rickandmortyapi.com/api/character/1`, press Send, and read the JSON that comes back. That is Rick. You just tested an API, in the sense that you sent a request and inspected the response, which is most of the job in one sentence.
+
+<Callout type="tip">
+Read the response properly. Notice the fields, the nesting, the types. The assertions in the next step check exactly these values, so a minute spent reading now is a minute you do not spend confused later.
+</Callout>
+
+<Checkpoint id="w3-s3">You have a Collection with a `GET` request that returns Rick as JSON.</Checkpoint>
+
+</Step>
+
+<Step id="w3-s4" title="Add assertions" minutes={45}>
+
+A request that returns data is a start. A request that checks its own data is a test. Postman runs JavaScript in the test script tab, which newer versions label under Scripts, on the post response side. This is your JavaScript, doing QA work.
+
+Add these to the Rick request. They are correct as written, so use them as they are:
+
+<CodeFile name="Scripts tab, post response">{`pm.test("status is 200", () => {
+  pm.response.to.have.status(200);
+});
+
+pm.test("Rick, id 1, is Alive", () => {
+  const body = pm.response.json();
+  pm.expect(body.status).to.eql("Alive");
+});
+
+pm.test("a page returns 20 characters", () => {
+  // GET https://rickandmortyapi.com/api/character
+  const body = pm.response.json();
+  pm.expect(body.results).to.have.lengthOf(20);
+});`}</CodeFile>
+
+Then a second target for practice. Add a `GET` request to `https://pokeapi.co/api/v2/pokemon/pikachu` and assert that one of its types is `electric`. And add one more request to a character id that does not exist, then assert it returns `404`, because testing the unhappy path is not pessimism, it is the job.
+
+<Callout type="why">
+Anyone can check that the happy path works. The value is in confirming that the wrong input fails in the right way. A `404` that arrives on cue is a system behaving. A `404` that never comes is a bug wearing a disguise.
+</Callout>
+
+<Checkpoint id="w3-s4">Your requests have green tests, including one that asserts a `404` on a missing id.</Checkpoint>
+
+</Step>
+
+<Step id="w3-s5" title="Artifact, export the collection" minutes={20}>
+
+Save the week. In Postman, open the Collection menu and choose Export, which produces a JSON file describing every request and every test. Commit that file to a public repo called `multiverse-api-tests`, with a short README saying what it covers.
+
+<MacNote>
+Still happier with buttons? Use <DocLink href="https://desktop.github.com/">GitHub Desktop</DocLink> exactly as in week two. Drop the exported JSON into a folder, commit, publish, and leave "Keep this code private" unchecked.
+</MacNote>
+
+<Callout type="tip">
+An exported collection is portable proof. Anyone can import it into their own Postman and watch your tests run green. That is a more convincing portfolio piece than a screenshot, which could be anything.
+</Callout>
+
+<Checkpoint id="w3-s5">A Postman collection with green tests is exported and pushed to a public repo.</Checkpoint>
+
+</Step>
