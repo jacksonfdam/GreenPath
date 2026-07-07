@@ -3,27 +3,47 @@ week: 3
 slug: "multiverse-api"
 title: "The Multiverse API"
 summary: "Test below the interface, where JSON is a JavaScript object wearing a coat."
-estimatedMinutes: 180
+estimatedMinutes: 220
 prerequisites: ["Week 1 done", "Comfort reading JSON", "Postman or a browser"]
 outcomes:
   - "Send HTTP requests and read the responses with intent"
-  - "Write real assertions against a live API and test the unhappy path"
+  - "Write real assertions against a live API, including filtered results and the unhappy path"
 artifact:
   name: "multiverse-api-tests collection"
   where: "An exported Postman collection in a public repo"
 ---
 
-<Step id="w3-s1" title="HTTP and JSON, the practical version" minutes={30}>
+<Step id="w3-s1" title="HTTP and JSON, the practical version" minutes={35}>
 
 APIs are how the front end you already know talks to the back end you have not met. This is where your JavaScript background quietly pays off, because JSON is basically a JavaScript object that put on a coat to go outside.
 
-The parts you need. Methods: `GET` reads, `POST` creates, `PUT` updates, `DELETE` removes. Status codes: `200` means fine, `400` means you sent something wrong, `401` means you are not allowed, `404` means it is not there, `500` means the server broke. REST is just the convention that ties tidy URLs to those methods. Keep it practical and resist the urge to read a specification for fun.
+The parts you need. Methods say what you want to do: `GET` reads, `POST` creates, `PUT` updates, `DELETE` removes. Status codes say how it went: `200` means fine, `400` means you sent something wrong, `401` means you are not allowed in, `404` means it is not there, `500` means the server itself broke. REST is just the convention that ties tidy URLs to those methods.
+
+Here is a real response, trimmed, so you can see the shape you will be asserting against. This is what the Rick and Morty API returns for character 1.
+
+<CodeFile name="Response body, character 1">{`{
+  "id": 1,
+  "name": "Rick Sanchez",
+  "status": "Alive",
+  "species": "Human",
+  "origin": { "name": "Earth (C-137)" },
+  "episode": [
+    "https://rickandmortyapi.com/api/episode/1",
+    "https://rickandmortyapi.com/api/episode/2"
+  ]
+}`}</CodeFile>
+
+Read it as data with a shape. Some fields are strings, `origin` is a nested object with its own `name`, and `episode` is an array. An assertion later will reach into exactly one of these, so knowing the shape is the whole game.
+
+<Exercise title="name the parts">
+For the response above, answer three things in a note. Which field would you check to confirm the character is alive? How would you read the origin's name in JavaScript, starting from a variable called `body`? And how many episodes are in that array? If you wrote `body.origin.name` and `2`, you are already reading responses the way the tests will.
+</Exercise>
 
 <Callout type="why">
-Testing at the API level finds problems before they reach a screen, and it is faster and steadier than clicking. It is also where a lot of QA automation jobs actually spend their time.
+Testing at the API level finds problems before they reach a screen, and it is faster and steadier than clicking. It is also where a great deal of QA automation actually spends its time.
 </Callout>
 
-<Checkpoint id="w3-s1">You can say what `GET`, `POST`, `404`, and `500` mean without looking them up.</Checkpoint>
+<Checkpoint id="w3-s1">You can say what `GET`, `POST`, `404`, and `500` mean, and read a value out of a nested JSON response.</Checkpoint>
 
 </Step>
 
@@ -45,13 +65,17 @@ No terminal needed for any of this step. If macOS warns that the app was downloa
 
 Time to point it at something. Two public APIs need no key and no login, which makes them perfect first targets: the <DocLink href="https://rickandmortyapi.com/documentation">Rick and Morty API</DocLink> and <DocLink href="https://pokeapi.co/docs/v2">PokeAPI</DocLink>.
 
-In Postman, make a new Collection and call it something you will recognise. Add a `GET` request to `https://rickandmortyapi.com/api/character/1`, press Send, and read the JSON that comes back. That is Rick. You just tested an API, in the sense that you sent a request and inspected the response, which is most of the job in one sentence.
+Work through it as a sequence. In Postman, create a new Collection and name it `multiverse-api-tests`. Add a request, set the method to `GET`, and put `https://rickandmortyapi.com/api/character/1` in the URL bar. Press Send. The response panel fills with the JSON from the last step, plus a status code near the top, which should read `200 OK`, and a response time. You just tested an API, in the sense that you sent a request and inspected the response, which is most of the job in one sentence.
+
+<Exercise title="change the id, predict the result">
+Duplicate the request and change the `1` to `2`. Before pressing Send, predict what `name` you expect to differ. Then send it and check. Now change it to `183` and read the `status` field. Getting into the habit of predicting before sending is what separates testing from browsing.
+</Exercise>
 
 <Callout type="tip">
-Read the response properly. Notice the fields, the nesting, the types. The assertions in the next step check exactly these values, so a minute spent reading now is a minute you do not spend confused later.
+Read every response properly: the fields, the nesting, the types, and the status code. The assertions in the next step check exactly these values, so a minute spent reading now is a minute you do not spend confused later.
 </Callout>
 
-<Checkpoint id="w3-s3">You have a Collection with a `GET` request that returns Rick as JSON.</Checkpoint>
+<Checkpoint id="w3-s3">You have a Collection with a `GET` request that returns a character as JSON, and you have inspected the status code and body.</Checkpoint>
 
 </Step>
 
@@ -59,7 +83,7 @@ Read the response properly. Notice the fields, the nesting, the types. The asser
 
 A request that returns data is a start. A request that checks its own data is a test. Postman runs JavaScript in the test script tab, which newer versions label under Scripts, on the post response side. This is your JavaScript, doing QA work.
 
-Add these to the Rick request. They are correct as written, so use them as they are:
+Add these to the character 1 request. They are correct as written, so use them as they are:
 
 <CodeFile name="Scripts tab, post response">{`pm.test("status is 200", () => {
   pm.response.to.have.status(200);
@@ -76,19 +100,57 @@ pm.test("a page returns 20 characters", () => {
   pm.expect(body.results).to.have.lengthOf(20);
 });`}</CodeFile>
 
-Then a second target for practice. Add a `GET` request to `https://pokeapi.co/api/v2/pokemon/pikachu` and assert that one of its types is `electric`. And add one more request to a character id that does not exist, then assert it returns `404`, because testing the unhappy path is not pessimism, it is the job.
+Read the middle test line by line, because the pattern repeats everywhere. `pm.test` names a check and takes a function to run. `pm.response.json()` parses the response body into a JavaScript object, the same object you read in step one. `body.status` reaches into it for one field. And `pm.expect(...).to.eql("Alive")` asserts that field equals the value you expect. Name, parse, reach, assert. That is the whole grammar.
+
+The third test is a hint about the next step: the character list endpoint returns pages of twenty. Notice the comment tells you which URL it assumes, because an assertion is only meaningful against the right request.
+
+Now two more targets. Add a `GET` request to `https://pokeapi.co/api/v2/pokemon/pikachu` and assert that one of its types is `electric`. And add a request to a character id that does not exist, then assert it returns `404`, because testing the unhappy path is not pessimism, it is the job.
+
+<Exercise title="assert a field you choose">
+On the character 1 request, add one more `pm.test` of your own that asserts a different field, for example that `body.species` equals `"Human"`. Reuse the name-parse-reach-assert grammar. Writing an assertion from scratch, rather than copying one, is the point where this becomes a skill you own.
+</Exercise>
 
 <Callout type="why">
 Anyone can check that the happy path works. The value is in confirming that the wrong input fails in the right way. A `404` that arrives on cue is a system behaving. A `404` that never comes is a bug wearing a disguise.
 </Callout>
 
-<Checkpoint id="w3-s4">Your requests have green tests, including one that asserts a `404` on a missing id.</Checkpoint>
+<Checkpoint id="w3-s4">Your requests have green tests, including one you wrote yourself and one that asserts a `404` on a missing id.</Checkpoint>
+
+</Step>
+
+<Step id="w3-s6" title="Query parameters and checking every result" minutes={30}>
+
+Real APIs let you filter, and real tests check not just one value but a whole set. Both are worth a hands-on pass.
+
+The Rick and Morty API filters characters with a query parameter. Add a `GET` request to `https://rickandmortyapi.com/api/character?status=alive`. The part after the `?` is a query parameter: it asks the server to return only living characters. Send it and skim the `results` array; every entry should have a `status` of `Alive`.
+
+Now assert that, for every result, not just the first. This test loops over the array and checks each one. It is correct, use it as written:
+
+<CodeFile name="Scripts tab, post response">{`pm.test("every result on the filtered page is Alive", () => {
+  // GET https://rickandmortyapi.com/api/character?status=alive
+  const body = pm.response.json();
+  body.results.forEach((character) => {
+    pm.expect(character.status).to.eql("Alive");
+  });
+});`}</CodeFile>
+
+That `forEach` is the same array thinking from week one, now guarding a real filter. If the server ever returned a dead character on this page, one iteration would fail and name the culprit.
+
+<Exercise title="filter and verify">
+Add a request for `https://rickandmortyapi.com/api/character?species=human` and write a test, in the same shape, that asserts every result has a `species` of `"Human"`. Then, to prove the test can fail, temporarily change `"Human"` to `"Alien"` and watch it go red before changing it back. A test you have never seen fail is a test you do not yet trust.
+</Exercise>
+
+<Callout type="tip">
+Checking one item passes when the data happens to cooperate. Checking every item is what catches the case the sample missed. When you can, assert about the whole collection, not the first thing you see.
+</Callout>
+
+<Checkpoint id="w3-s6">You have a request using a query parameter and a test that asserts a property across every result, and you have watched it fail on purpose.</Checkpoint>
 
 </Step>
 
 <Step id="w3-s5" title="Artifact, export the collection" minutes={20}>
 
-Save the week. In Postman, open the Collection menu and choose Export, which produces a JSON file describing every request and every test. Commit that file to a public repo called `multiverse-api-tests`, with a short README saying what it covers.
+Save the week. In Postman, open the Collection menu and choose Export, which produces a JSON file describing every request and every test. Commit that file to a public repo called `multiverse-api-tests`, with a short README saying what it covers, including the filtered-results test you are quietly proud of.
 
 <MacNote>
 Still happier with buttons? Use <DocLink href="https://desktop.github.com/">GitHub Desktop</DocLink> exactly as in week two. Drop the exported JSON into a folder, commit, publish, and leave "Keep this code private" unchecked.
