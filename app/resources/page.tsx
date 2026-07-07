@@ -51,6 +51,9 @@ const GROUPS: { heading: string; items: Resource[] }[] = [
     heading: "Mac and setup",
     items: [
       { href: "https://nodejs.org/", label: "Node.js", note: "The runtime everything else rides on. Download the LTS build." },
+      { href: "https://www.python.org/downloads/", label: "Python", note: "Handy for scripts and QA tooling. Install the latest, use python3 and pip3." },
+      { href: "https://antigravity.google/", label: "Google Antigravity", note: "A free agentic IDE with AI coding agents built in. The recommended editor." },
+      { href: "https://code.visualstudio.com/", label: "Visual Studio Code", note: "The conventional editor everyone assumes, if you prefer it." },
       { href: "https://desktop.github.com/", label: "GitHub Desktop", note: "Git with buttons, for when the terminal can wait." },
       { href: "https://github.com/nvm-sh/nvm", label: "nvm", note: "Switch Node versions per project, when you are ready." },
       { href: "https://brew.sh/", label: "Homebrew", note: "Installs command line tools. Copy the command from the homepage." },
