@@ -1,0 +1,123 @@
+---
+week: 4
+slug: "first-green"
+title: "First Green"
+summary: "Cypress basics, the shortest distance from what you know to automation."
+estimatedMinutes: 210
+prerequisites: ["Week 1 done", "Node installed", "Some CSS selector memory"]
+outcomes:
+  - "Set up a Cypress project from an empty folder"
+  - "Write and run passing end to end tests, headed and headless"
+artifact:
+  name: "first-green repo"
+  where: "A public repo with three to five passing Cypress specs"
+---
+
+<Step id="w4-s1" title="Set up a project" minutes={25}>
+
+This is the heart of the portfolio. Cypress runs on JavaScript, which makes it the shortest distance between what you already know and an automation role. First, a project for it to live in.
+
+<MacNote>
+A few terminal words, because you will use them constantly. `cd` means change directory, so `cd ~/Desktop` moves you to your Desktop. `mkdir` makes a folder. Run the commands below one block at a time, and remember that no output usually means it worked.
+</MacNote>
+
+<Terminal
+  note="Make a project folder, move into it, and create a package.json."
+  commands={["cd ~/Desktop", "mkdir first-green", "cd first-green", "npm init -y"]}
+/>
+
+<Callout type="why">
+`npm init -y` creates a `package.json`, the file that lists your project's tools and settings. The `-y` says yes to every default so you are not answering questions you have no opinion about yet.
+</Callout>
+
+<Checkpoint id="w4-s1">You have a `first-green` folder with a `package.json` in it.</Checkpoint>
+
+</Step>
+
+<Step id="w4-s2" title="Install and open Cypress" minutes={25}>
+
+Now install Cypress into the project and open it. The first command downloads it, which can take a minute; the second launches the app.
+
+<Terminal
+  note="Install Cypress as a dev dependency, then open its window."
+  commands={["npm install cypress --save-dev", "npx cypress open"]}
+/>
+
+<MacNote>
+That second command opens a Cypress window. Choose "E2E Testing", then pick a browser when it asks. If macOS wants to confirm the first time, allow it. The window is where you will watch tests run while you build them.
+</MacNote>
+
+Keep the docs handy at <DocLink href="https://docs.cypress.io/">docs.cypress.io</DocLink>. They are unusually good, and you will use them more than you expect.
+
+<Checkpoint id="w4-s2">`npx cypress open` launches the Cypress window and you have chosen E2E Testing.</Checkpoint>
+
+</Step>
+
+<Step id="w4-s3" title="Selectors, from the CSS you already know" minutes={30}>
+
+Finding an element to test is the same thinking as writing a CSS selector, which you have done before. That skill transfers directly, coat and all.
+
+The core moves. `cy.visit` loads a page. `cy.get` finds elements by selector, and `cy.contains` finds them by text. `.click()` clicks, `.type()` types, and `.should()` makes an assertion about what you found. String a few together and you have described a user doing a thing, then checked that the thing worked.
+
+<Callout type="tip">
+Prefer selectors the app puts there on purpose, like `data-test` attributes, over ones based on styling. A class named for its colour will be renamed the day someone redesigns the button, and your test will break for a reason that has nothing to do with a bug.
+</Callout>
+
+<Checkpoint id="w4-s3">You can explain what `cy.visit`, `cy.get`, and `.should()` each do.</Checkpoint>
+
+</Step>
+
+<Step id="w4-s4" title="Your first real spec" minutes={35}>
+
+Time to write a test that logs into SauceDemo. Create a file at `cypress/e2e/login.cy.js`. This is correct, so use it as your template rather than improvising a version:
+
+<CodeFile name="cypress/e2e/login.cy.js">{`describe("SauceDemo login", () => {
+  it("logs in a standard user", () => {
+    cy.visit("https://www.saucedemo.com/");
+    cy.get("[data-test='username']").type("standard_user");
+    cy.get("[data-test='password']").type("secret_sauce");
+    cy.get("[data-test='login-button']").click();
+    cy.get(".inventory_list").should("be.visible");
+  });
+});`}</CodeFile>
+
+Read it top to bottom. `describe` groups related tests, `it` is one test, and the body visits the page, types the credentials, clicks the button, and asserts the inventory list appears. That last line is the whole point: it confirms the login actually worked, rather than just that you clicked a button and hoped.
+
+<Callout type="why">
+An assertion is what separates a test from a macro. Without the `.should()`, this is a script that clicks things. With it, this is a test that knows whether the login succeeded.
+</Callout>
+
+<Checkpoint id="w4-s4">Your `login.cy.js` spec passes in the Cypress window.</Checkpoint>
+
+</Step>
+
+<Step id="w4-s5" title="Run it headless" minutes={20}>
+
+The window is for building and watching. For running the whole suite quickly, and for the way a server will run it later, use headless mode.
+
+<Terminal
+  note="Run every spec without opening a window. This is how CI runs them too."
+  commands={["npx cypress run"]}
+/>
+
+<Callout type="why">
+`open` is for watching tests while you write them. `run` is the mode a CI server uses, with no window and no human. Getting comfortable with `run` now means week six holds no surprises.
+</Callout>
+
+<Checkpoint id="w4-s5">`npx cypress run` completes with your spec green in the terminal.</Checkpoint>
+
+</Step>
+
+<Step id="w4-s6" title="Artifact, the first-green repo" minutes={30}>
+
+Grow it to three to five passing specs. Log in as `standard_user`, try a deliberately wrong password and assert the error, add an item to the cart and check it appears. Small, honest tests that each prove one thing.
+
+Push it to a public repo with a README that says, one line per spec, what each one proves. That README is what a hiring manager reads first, so make it do the talking.
+
+<MacNote>
+GitHub Desktop still works fine here. Commit as you go, one spec at a time, so the history reads like a story rather than a single "did everything" dump.
+</MacNote>
+
+<Checkpoint id="w4-s6">`npx cypress run` is green, and the repo is public on GitHub with a clear README.</Checkpoint>
+
+</Step>
