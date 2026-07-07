@@ -1,0 +1,91 @@
+---
+week: 6
+slug: "autopilot"
+title: "Autopilot"
+summary: "Make the tests run themselves, and treat automation like real code."
+estimatedMinutes: 180
+prerequisites: ["Week 5 done", "A public repo with Cypress tests", "A GitHub account"]
+outcomes:
+  - "Run your test suite automatically on every push with GitHub Actions"
+  - "Show a green CI badge and a written note on how you used AI"
+artifact:
+  name: "Green CI badge and an AI usage note"
+  where: "On a public repo's README"
+---
+
+<Step id="w6-s1" title="Git with a bit more intent" minutes={25}>
+
+You have been committing all along. Now do it with a little more deliberateness, because from here your tests need git to reach a server.
+
+<MacNote>
+If GitHub Desktop has served you well, keep using it. If you want to try the terminal, macOS may offer to install the developer command line tools the first time you run `git`. Click Install and wait; it is a normal, one time thing. Then set your identity once, so your commits are attributed to you.
+</MacNote>
+
+<Terminal
+  note="Tell git who you are. Do this once per machine. Use your own name and email."
+  commands={['git config --global user.name "Your Name"', 'git config --global user.email "you@example.com"']}
+/>
+
+<Callout type="tip">
+Use the email tied to your GitHub account, so your commits link to your profile and the contribution graph fills in. That green graph is a small, honest signal that you show up.
+</Callout>
+
+<Checkpoint id="w6-s1">Your git identity is set, and your commits are attributed to you.</Checkpoint>
+
+</Step>
+
+<Step id="w6-s2" title="A CI pipeline with GitHub Actions" minutes={40}>
+
+Continuous integration means your tests run on a fresh machine every time you push, with no one remembering to press a button. Create a file at `.github/workflows/e2e.yml`. This workflow is correct as written:
+
+<CodeFile name=".github/workflows/e2e.yml">{`name: E2E
+on: [push]
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - uses: cypress-io/github-action@v6`}</CodeFile>
+
+The reference lives at <DocLink href="https://docs.github.com/actions">GitHub Actions</DocLink>.
+
+<Callout type="why">
+`node-version: lts/*` tells the runner to use whatever the current long term support version of Node is, rather than a number pinned in place. A pinned number looks precise and quietly rots; `lts/*` stays correct as the years pass. It is the same instinct as clicking the LTS button in week one, written into your pipeline.
+</Callout>
+
+<Callout type="why">
+This runs your whole suite on a clean machine every push. The green tick recruiters see is the same job that catches you the moment you break something. Automation you trust is automation that runs without you.
+</Callout>
+
+<Checkpoint id="w6-s2">Pushing to GitHub triggers the workflow, and the Actions tab shows it running your tests.</Checkpoint>
+
+</Step>
+
+<Step id="w6-s3" title="A green badge" minutes={20}>
+
+A passing pipeline is good. A passing pipeline visible on your README is better, because people read the README and rarely open the Actions tab. Add a status badge, swapping in your real username and repository name where it says `USER` and `REPO`:
+
+<CodeFile name="README.md">{`![E2E](https://github.com/USER/REPO/actions/workflows/e2e.yml/badge.svg)`}</CodeFile>
+
+<Callout type="tip">
+The badge is honest by design. It reflects the latest run, so it turns red if your tests fail. That is a feature. A badge that is always green regardless would be decoration, and everyone can tell the difference.
+</Callout>
+
+<Checkpoint id="w6-s3">A green E2E badge shows on your public repo's README.</Checkpoint>
+
+</Step>
+
+<Step id="w6-s4" title="AI in testing, which the role wants" minutes={30}>
+
+The job asks for it, so use it well and out in the open. Take a requirement and ask an assistant, Claude or Copilot, to generate extra test cases from it, and to suggest scenarios you did not think of. Then do the part that matters: write down what it got right, and what you had to fix.
+
+<Callout type="why">
+That note is a ready made interview answer. "I used AI to widen my test coverage, then reviewed and corrected its output" shows judgement, which is the thing being hired, not the typing. Using AI well is listed in the job, not frowned upon. Using it without checking is the only version that goes wrong.
+</Callout>
+
+<Checkpoint id="w6-s4">You have a green CI badge and a short written note on how AI was used and corrected.</Checkpoint>
+
+</Step>
