@@ -62,9 +62,11 @@ Push to a public GitHub repo, then import it at
 ## Routes
 
 - `/` home, with the overall progress ring
+- `/setup` install every tool the course needs, in order
 - `/codelabs` the index of all seven
 - `/codelabs/[slug]` a single codelab, one step at a time
 - `/progress` per week and overall completion, streak, and a reset
 - `/portfolio` paste your artifact links, get a tidy index
 - `/terminal-101` the macOS terminal survival guide
+- `/ai-help` how to use AI agents through the course, and how not to
 - `/resources` the master link list
