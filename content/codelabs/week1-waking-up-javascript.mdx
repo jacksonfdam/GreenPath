@@ -2,11 +2,12 @@
 week: 1
 slug: "waking-up-javascript"
 title: "Waking up JavaScript"
-summary: "Shake the dust off, meet the QA mindset."
-estimatedMinutes: 180
+summary: "Shake the dust off, meet the QA mindset, and write code by hand as you go."
+estimatedMinutes: 240
 prerequisites: ["A Mac", "A browser", "Mild optimism"]
 outcomes:
   - "Read and write modern JavaScript comfortably enough to test with it"
+  - "Use array methods and async/await, the two features testing leans on most"
   - "Explain what testing is for in one sentence without using the word quality twice"
 artifact:
   name: "QA vocabulary cheat sheet"
@@ -36,15 +37,9 @@ Node lets you run JavaScript outside the browser, and npm is the tool that insta
 
 </Step>
 
-<Step id="w1-s2" title="Modern JavaScript, the parts testing uses" minutes={40}>
+<Step id="w1-s2" title="The REPL, and modern syntax" minutes={30}>
 
-You knew JavaScript before, from the era of `var` and callbacks. The language moved on while you were away, and mostly for the better. You do not need all of it. You need the parts that testing actually leans on.
-
-The short list: `let` and `const` instead of `var`, arrow functions, template literals, destructuring, the array methods `map`, `filter`, and `find`, and the big one, Promises with `async` and `await`. Asynchronous code is most of what testing touches, because tests wait for pages to load and requests to return, and they do it without freezing everything else.
-
-Read the parts you need at <DocLink href="https://javascript.info/">javascript.info</DocLink>, and keep <DocLink href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">MDN JavaScript</DocLink> open as the reference. You will not remember all of it, and you are not meant to. You are meant to know where to look.
-
-Try snippets as you read. Node ships with a REPL, a live prompt where you type JavaScript and see the result immediately.
+Before the concepts, get a place to try them. Node ships with a REPL, a live prompt where you type JavaScript and see the result immediately. It is the fastest feedback loop you will find, and you will use it constantly this week.
 
 <Terminal
   note="Open the live JavaScript prompt. Type an expression, press Enter, see the result."
@@ -52,36 +47,168 @@ Try snippets as you read. Node ships with a REPL, a live prompt where you type J
 />
 
 <MacNote>
-Once the REPL is open, the prompt changes to a `>`. Type something like `[1, 2, 3].map(n => n * 2)` and press Enter. To leave, type `.exit` and press Enter, or hold Control and press D. Closing the prompt does not close the course.
+Once it is open, the prompt changes to a `>`. Type something and press Enter. To leave, type `.exit` and press Enter, or hold Control and press D. One quirk worth knowing now: when you assign a variable, the REPL prints `undefined`. That is the value of the assignment itself, not an error. Expressions that produce a value, like `2 + 2`, print that value.
 </MacNote>
 
+Now the syntax that changed while you were away. Three pieces, all muscle memory once you have typed them a few times.
+
+First, `let` and `const` replace `var`. Use `const` by default, for values that do not get reassigned, and `let` only when you genuinely need to reassign. `var` still works, but it has scoping surprises that `const` and `let` quietly fixed. Second, arrow functions are a shorter way to write functions: `(x) => x * 2` is a function that doubles its input. Third, template literals let you build strings with backticks and `${...}` holes, so instead of `"Hello " + name` you write `` `Hello ${name}` `` and stop counting your quote marks.
+
+Type this session into the REPL, line by line, and watch the results. The `// =>` comments show what to expect.
+
+<CodeFile name="Node REPL">{`const price = 10;
+const label = "Total: " + price;
+label;
+// => "Total: 10"
+
+const rate = 1.25;
+const withTax = price * rate;
+withTax;
+// => 12.5
+
+const double = (n) => n * 2;
+double(21);
+// => 42`}</CodeFile>
+
+<Exercise title="build a greeting">
+In the REPL, make a `const` called `name` set to your name, then use a template literal to build the string `Hello, YOURNAME, welcome back`. If you find yourself using a `+` sign, you are doing it the old way. Reach for the backticks and `${name}` instead.
+</Exercise>
+
 <Callout type="tip">
-Destructuring and array methods are not academic. A test that reads a JSON response and checks one field is destructuring plus a `find`. You are learning the exact moves you will use in week three.
+You are not memorising this. You are building enough recognition that when a test uses an arrow function or a template literal, you read straight past it instead of stumbling. Recognition, not recall, is the goal all week.
 </Callout>
 
-<Checkpoint id="w1-s2">You have run at least one modern JavaScript snippet in the Node REPL and left it again.</Checkpoint>
+<Checkpoint id="w1-s2">You have run assignments, an arrow function, and a template literal in the REPL, and you know why an assignment prints `undefined`.</Checkpoint>
 
 </Step>
 
-<Step id="w1-s3" title="What testing is actually for" minutes={40}>
+<Step id="w1-s5" title="Destructuring and array methods" minutes={35}>
 
-Testing is not about proving software is perfect. Nothing is, and a tester who promises otherwise is selling something. Testing is about making risk visible and reducing uncertainty, so the people deciding whether to ship know what they are shipping.
+This is the step that pays off most in testing, because reading a response and checking one value inside it is most of the job. Two tools do the heavy lifting: destructuring, for pulling values out of objects and arrays, and the array methods `map`, `filter`, `find`, and `reduce`.
 
-A few frames worth holding. Test levels describe how much of the system you are looking at: component, integration, system, and acceptance. Test types describe what you are looking for: functional, regression, exploratory. And risk based testing is the sensible habit of spending your limited time where a failure would hurt most, rather than testing everything equally and running out of week.
+Destructuring unpacks an object into variables in one line. Instead of `const status = response.status`, you write `const { status } = response`. It reads the field named `status` out of the object and hands it to you.
 
-Read the concepts in the <DocLink href="https://www.istqb.org/">ISTQB Foundation</DocLink> syllabus, which is free to download. Read it for the ideas and the shared vocabulary. The exam is optional and you can decide about it later. For the human side of the craft, <DocLink href="https://www.ministryoftesting.com/">Ministry of Testing</DocLink> is where testers talk about the job like it is one.
+Work through this session. Type it, read the outputs, then change a number and predict the result before pressing Enter.
+
+<CodeFile name="Node REPL">{`const character = { name: "Rick", status: "Alive", id: 1 };
+
+const { name, status } = character;
+name;
+// => "Rick"
+status;
+// => "Alive"
+
+const nums = [3, 1, 4, 1, 5, 9, 2, 6];
+
+nums.filter((n) => n > 3);
+// => [ 4, 5, 9, 6 ]
+
+nums.map((n) => n * 10);
+// => [ 30, 10, 40, 10, 50, 90, 20, 60 ]
+
+nums.find((n) => n > 4);
+// => 5
+
+nums.reduce((total, n) => total + n, 0);
+// => 31`}</CodeFile>
+
+Read each method as a sentence. `filter` keeps the items that pass a test. `map` transforms every item into a new one. `find` returns the first item that passes a test, or `undefined` if none do. `reduce` boils a whole array down to a single value, here a sum, starting from `0`.
+
+<Exercise title="the QA one-liner">
+Given `const results = [{ name: "Rick", status: "Alive" }, { name: "Birdperson", status: "Dead" }]`, write one line that finds the character whose `name` is `"Rick"` and confirms their `status`. This exact shape of code, `find` then check a field, is what a real API test does in week three. You are writing it a fortnight early.
+</Exercise>
+
+<Callout type="why">
+When a test says "the response contains a user named Rick who is alive", that sentence becomes a `find` and a comparison. Learning these methods is not general JavaScript study. It is the specific vocabulary of assertions.
+</Callout>
+
+<Checkpoint id="w1-s5">You have used destructuring, `filter`, `map`, `find`, and `reduce` in the REPL, and the "find then check" pattern makes sense.</Checkpoint>
+
+</Step>
+
+<Step id="w1-s6" title="Promises and async, the big one" minutes={35}>
+
+Testing is mostly waiting. Waiting for a page to load, a request to return, an animation to settle. JavaScript handles waiting with Promises, and `async` and `await` make Promise code read almost like ordinary top-to-bottom code. This is the single most important feature to be comfortable with, because nearly every automated test uses it, usually without you noticing.
+
+A Promise is a value that is not ready yet but will be. `await` pauses inside an `async` function until the Promise settles, then hands you the result. Here is a worked example you can run, using a real public API and the `fetch` built into modern Node.
+
+<CodeFile name="Node REPL">{`const getRick = async () => {
+  const response = await fetch("https://rickandmortyapi.com/api/character/1");
+  const data = await response.json();
+  return data.name;
+};
+
+await getRick();
+// => "Rick Sanchez"`}</CodeFile>
+
+Read it slowly. `fetch` returns a Promise for a response, so you `await` it. Turning that response into JSON is also asynchronous, so you `await` again. Then you reach into the parsed object for `name`. The top-level `await` on the last line works because the Node REPL allows it; inside a real file it lives within the `async` function.
+
+<Exercise title="fetch a Pokemon">
+Adapt the example to fetch `https://pokeapi.co/api/v2/pokemon/pikachu` and return the value at `data.name`. When it works, try removing one of the `await` keywords and see what comes back instead. Understanding what breaks is worth as much as understanding what works, and it is exactly the instinct testing rewards.
+</Exercise>
+
+<Callout type="warning">
+Forgetting an `await` is the most common async mistake, and it fails quietly: you get a Promise where you expected a value, and nothing throws an error. When a test behaves strangely later, a missing `await` is the first thing to suspect.
+</Callout>
+
+<Checkpoint id="w1-s6">You have written an `async` function that fetches from an API and returns a value from the response.</Checkpoint>
+
+</Step>
+
+<Step id="w1-s3" title="What testing is actually for" minutes={35}>
+
+Now step back from the keyboard. Testing is not about proving software is perfect. Nothing is, and a tester who promises otherwise is selling something. Testing is about making risk visible and reducing uncertainty, so the people deciding whether to ship know what they are shipping.
+
+A few frames worth holding, and worth writing into your cheat sheet later. Test levels describe how much of the system you are looking at. A component test checks one unit in isolation. An integration test checks that two or more pieces work together. A system test exercises the whole thing end to end. An acceptance test asks whether it does what the user actually needed, which is a different question from whether it works.
+
+Test types describe what you are looking for. Functional testing asks "does it do the right thing". Regression testing asks "did we break something that used to work", which is the quiet majority of real testing. Exploratory testing is deliberate, skilled poking-around, without a script, to find what the scripts missed.
+
+And risk based testing is the habit that ties it together: spend your limited time where a failure would hurt most, rather than testing everything equally and running out of week. A broken checkout is a catastrophe. A misaligned footer is a Tuesday. Test accordingly.
+
+Read the concepts in the <DocLink href="https://www.istqb.org/">ISTQB Foundation</DocLink> syllabus, which is free to download. Read it for the ideas and the shared vocabulary, not to memorise. The exam is optional and you can decide about it later. For the human side of the craft, <DocLink href="https://www.ministryoftesting.com/">Ministry of Testing</DocLink> is where testers talk about the job like it is one.
 
 <Callout type="why">
 The role you are aiming at frames quality as reducing uncertainty, not as a stamp of approval. If you internalise one thing this week, make it that. It changes how you write every test case that follows.
 </Callout>
 
-<Checkpoint id="w1-s3">You can say, in one sentence, what testing is for, and it mentions risk or uncertainty.</Checkpoint>
+<Checkpoint id="w1-s3">You can name the four test levels and explain the difference between functional and regression testing.</Checkpoint>
+
+</Step>
+
+<Step id="w1-s7" title="Your first test, by hand" minutes={30}>
+
+Theory sticks better once you have tested something, so test something small and completely under your control. Here is a tiny function with a deliberate flaw. Do not fix it yet. Test it, the way a tester would, before touching the code.
+
+<CodeFile name="discount.js (or paste into the REPL)">{`const applyDiscount = (price, percent) => {
+  return price - price * (percent / 100);
+};
+
+applyDiscount(100, 10);
+// => 90
+applyDiscount(100, 0);
+// => 100
+applyDiscount(100, 100);
+// => 0`}</CodeFile>
+
+The happy cases pass. Now think like a tester and ask what the requirement did not say. What should happen for a negative percent? For a percent over one hundred? For a price of zero? The function answers all of these, but not necessarily correctly, and no one wrote down which answers are right.
+
+<Exercise title="find the risks, not just the bugs">
+Write down, in plain words, three inputs you would test beyond the happy path, and what you expect each to return. You are doing boundary and edge-case thinking by hand, which is exactly week two's material. Then, if you like, run those inputs and see whether the function agrees with you. Where it does not, you have found either a bug or a missing requirement, and telling those two apart is the skill.
+</Exercise>
+
+<Callout type="why">
+Notice what just happened. You found the interesting cases by asking what could go wrong, not by reading the code line by line. That question, asked early and often, is most of testing. The code was the excuse to practise it.
+</Callout>
+
+<Checkpoint id="w1-s7">You have listed at least three edge cases for `applyDiscount` with expected results, and checked them against the function.</Checkpoint>
 
 </Step>
 
 <Step id="w1-s4" title="Artifact, your QA vocabulary cheat sheet" minutes={30}>
 
 Now you make the thing that makes this week stick. Write a one page QA vocabulary cheat sheet, in your own words. Test levels, test types, risk based testing, and any term that felt slippery. Not copied from the syllabus. Phrased by you, badly if necessary, then tidied.
+
+Add a second short section while the code is fresh: a few lines each on array methods and `async`/`await`, in your own words, with a tiny example. You will thank yourself in week three when JSON assertions arrive and the syntax is already yours.
 
 Keep it as a markdown file. If you already have a notes repo, put it there. If you do not, a single `qa-cheat-sheet.md` on your Desktop is fine for now; week two sets up somewhere better to keep it.
 
@@ -93,6 +220,6 @@ You will forget a definition you read. You are far less likely to forget one you
 Keep it to one page. A cheat sheet you can read in two minutes gets read. A ten page one becomes a document you never open, which is a different kind of artifact entirely.
 </Callout>
 
-<Checkpoint id="w1-s4">Node runs, and a cheat sheet you wrote yourself exists as a markdown file.</Checkpoint>
+<Checkpoint id="w1-s4">Node runs, the async and array snippets make sense, and a cheat sheet you wrote yourself exists as a markdown file.</Checkpoint>
 
 </Step>
