@@ -50,7 +50,8 @@ commit "feat: add MDX content loader and step parser" \
 
 commit "feat: add reusable content components" \
   components/Terminal.tsx components/MacNote.tsx components/Callout.tsx \
-  components/DocLink.tsx components/CodeFile.tsx components/CopyButton.tsx
+  components/DocLink.tsx components/CodeFile.tsx components/CopyButton.tsx \
+  components/Exercise.tsx
 
 commit "feat: add checkpoint, step, and stepper components" \
   components/Checkpoint.tsx components/Step.tsx components/Stepper.tsx
@@ -87,6 +88,12 @@ commit "feat: add macOS terminal survival guide" \
 
 commit "feat: add resources link list" \
   app/resources/page.tsx
+
+commit "feat: add environment setup page" \
+  app/setup/page.tsx
+
+commit "feat: add AI help guide" \
+  app/ai-help/page.tsx
 
 commit "feat: add not-found page and site icon" \
   app/not-found.tsx app/icon.svg

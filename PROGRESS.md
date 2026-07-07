@@ -6,20 +6,24 @@ use it to see the whole plan without opening the site.
 
 ## Week 1. Waking up JavaScript
 
-_Shake the dust off, meet the QA mindset._
+_Shake the dust off, meet the QA mindset, and write code by hand as you go._
 
 - [ ] w1-s1 Install Node
-- [ ] w1-s2 Modern JavaScript, the parts testing uses
+- [ ] w1-s2 The REPL, and modern syntax
+- [ ] w1-s5 Destructuring and array methods
+- [ ] w1-s6 Promises and async, the big one
 - [ ] w1-s3 What testing is actually for
+- [ ] w1-s7 Your first test, by hand
 - [ ] w1-s4 Artifact, your QA vocabulary cheat sheet
 
 Artifact: QA vocabulary cheat sheet (A markdown file in your notes repo).
 
 ## Week 2. Bug Hunt
 
-_Turn a requirement into test cases, and hunt bugs with method rather than luck._
+_Turn a requirement into test cases with real techniques, then hunt bugs with method._
 
-- [ ] w2-s1 Test design techniques
+- [ ] w2-s1 Equivalence partitioning and boundary values
+- [ ] w2-s6 Decision tables, for combinations
 - [ ] w2-s2 Meet the target
 - [ ] w2-s3 Write test cases
 - [ ] w2-s4 Exploratory session and bug reports
@@ -35,6 +39,7 @@ _Test below the interface, where JSON is a JavaScript object wearing a coat._
 - [ ] w3-s2 Install Postman
 - [ ] w3-s3 Call an API
 - [ ] w3-s4 Add assertions
+- [ ] w3-s6 Query parameters and checking every result
 - [ ] w3-s5 Artifact, export the collection
 
 Artifact: multiverse-api-tests collection (An exported Postman collection in a public repo).
