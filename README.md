@@ -69,4 +69,5 @@ Push to a public GitHub repo, then import it at
 - `/portfolio` paste your artifact links, get a tidy index
 - `/terminal-101` the macOS terminal survival guide
 - `/ai-help` how to use AI agents through the course, and how not to
+- `/glossary` a searchable QA and testing glossary
 - `/resources` the master link list
