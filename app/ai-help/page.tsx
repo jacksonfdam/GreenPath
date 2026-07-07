@@ -22,6 +22,46 @@ export default function AiHelpPage() {
           the worst possible moment, which in testing is a special kind of irony.
         </p>
 
+        <h2>The words, briefly</h2>
+        <p>
+          A little vocabulary, so the rest of this page and half the internet make
+          sense. None of it is complicated once someone says it plainly.
+        </p>
+        <ul>
+          <li>
+            <strong>Prompt.</strong> The instruction you give the model. It is the whole
+            job, really. A vague prompt gets a vague answer; a specific one gets
+            something useful.
+          </li>
+          <li>
+            <strong>Context.</strong> Everything the model can see at once: your prompt,
+            the files or text you gave it, the conversation so far. It has a limit, so
+            what you leave out matters as much as what you put in.
+          </li>
+          <li>
+            <strong>Model.</strong> The AI itself, the thing that turns your prompt into
+            words. Claude, GPT, and Gemini are models. Each has versions, and newer is
+            usually, not always, better.
+          </li>
+          <li>
+            <strong>Agent.</strong> A model given the ability to act in a loop: read
+            files, run commands, check the result, and try again toward a goal. A chat
+            answers; an agent does.
+          </li>
+          <li>
+            <strong>Skill.</strong> A reusable, packaged set of instructions an agent can
+            load to do a specific task well, often written as a plain file the agent
+            reads. Think of it as a saved recipe rather than re-explaining every time.
+          </li>
+          <li>
+            <strong>Markdown, the .md file.</strong> A plain-text format for writing with
+            light structure: headings, lists, links. It is what READMEs are written in,
+            and increasingly how agents are instructed, in files like{" "}
+            <code>README.md</code>, <code>SKILL.md</code>, or <code>AGENTS.md</code>. It
+            is readable by both you and the machine, which is the point.
+          </li>
+        </ul>
+
         <h2>What it is genuinely good at</h2>
         <p>
           Widening your thinking and removing blank-page friction. Ask it to generate
@@ -114,6 +154,65 @@ what it proves. Use data-test selectors, not class or id selectors.`}</CodeFile>
           The second prompt gets you tests you can almost use as written, because you
           told it what you already know. The first gets you a guess.
         </p>
+
+        <h2>Write to a spec, not a vibe</h2>
+        <p>
+          There is a name for taking that stronger prompt seriously: spec-driven
+          development. Instead of nudging an agent with half a sentence and hoping, you
+          write a short, clear specification of what you want first, then let the agent
+          build against it. The spec is the source of truth; the agent is the literal-
+          minded pair who follows it.
+        </p>
+        <p>
+          You already know this discipline, because it is what a good requirement or a
+          clear acceptance criterion is in QA. A spec for an agent answers the same
+          questions a test case does: what should happen, under what conditions, and how
+          you will know it worked. Keep it plain. A few sentences of "here is what I
+          want, here are the constraints, here is what done looks like" beats a
+          paragraph of vibes every time. If you want to see the idea formalised, GitHub's{" "}
+          <DocLink href="https://github.com/github/spec-kit">Spec Kit</DocLink> is a free,
+          readable example of the workflow, and its{" "}
+          <DocLink href="https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/">
+            introduction
+          </DocLink>{" "}
+          explains the thinking without demanding you adopt the whole tool.
+        </p>
+        <Callout type="tip">
+          Do not over-engineer this. For most of what you will do in this course, the
+          "spec" is three or four honest sentences at the top of your prompt. The point
+          is to decide what you want before you ask, not to fill in a template.
+        </Callout>
+
+        <h2>Getting better at prompts</h2>
+        <p>
+          Prompting is a skill you improve by reading a little and practising a lot. The
+          official guides are short and worth the time, and they mostly agree with each
+          other: be clear, give context, show examples, ask for a format.
+        </p>
+        <ul>
+          <li>
+            <DocLink href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview">
+              Anthropic prompt engineering
+            </DocLink>
+            . Clear, practical, and the one this site's own guidance leans on.
+          </li>
+          <li>
+            <DocLink href="https://platform.openai.com/docs/guides/prompting">
+              OpenAI prompting guide
+            </DocLink>
+            . Strategies and worked examples for the GPT models.
+          </li>
+          <li>
+            <DocLink href="https://ai.google.dev/gemini-api/docs/prompting-strategies">
+              Google Gemini prompting strategies
+            </DocLink>
+            . Google's take, useful even if you never touch Gemini.
+          </li>
+          <li>
+            <DocLink href="https://www.promptingguide.ai/">Prompting Guide</DocLink>. A
+            vendor-neutral reference, deeper than the others if you want the theory.
+          </li>
+        </ul>
 
         <h2>The QA workflow, and why it doubles as an interview answer</h2>
         <p>
