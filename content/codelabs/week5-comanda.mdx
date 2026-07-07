@@ -1,0 +1,84 @@
+---
+week: 5
+slug: "comanda"
+title: "Comanda"
+summary: "Build a tiny app, then automate it. When you own the app, you own the tests."
+estimatedMinutes: 240
+prerequisites: ["Week 4 done", "Cypress running", "HTML, CSS, and JavaScript"]
+outcomes:
+  - "Build a small app from scratch with plain web technologies"
+  - "Test it end to end, including stubbed responses with cy.intercept"
+artifact:
+  name: "Comanda repo with Cypress suite"
+  where: "A public repo, or an extended TodoMVC suite as plan B"
+---
+
+<Step id="w5-s1" title="Build Comanda" minutes={50}>
+
+This is the signature piece. You build a tiny app, then automate it, which ties your front end past to the code and gives you tests you fully understand, because you wrote the thing they test.
+
+Comanda is a minimal restaurant order tracker in plain HTML, CSS, and JavaScript. No framework, on purpose. One screen: add an order to a table, mark it delivered, and see the running total. That is the whole app, and it is squarely inside the front end work you already know how to do.
+
+<Callout type="tip">
+Resist the urge to make it pretty or clever. A plain app with clear behaviour is easy to test. A fancy one with animations and edge cases is a second project pretending to be the first.
+</Callout>
+
+<Callout type="why">
+Owning the app changes the tests. When you control the markup, you can add the `data-test` attributes that make selectors stable, and you never have to guess what the app was supposed to do. You decided.
+</Callout>
+
+<Checkpoint id="w5-s1">Comanda runs in a browser: you can add an order, mark it delivered, and see the total update.</Checkpoint>
+
+</Step>
+
+<Step id="w5-s2" title="Deeper Cypress" minutes={40}>
+
+Two techniques that make tests sturdier. Fixtures are files of test data you load instead of hand typing values, so your tests read cleanly and your data lives in one place. And `cy.intercept` lets you stub a network response, so a test does not depend on some server being up and in a good mood.
+
+Read both in the Cypress docs at <DocLink href="https://docs.cypress.io/">docs.cypress.io</DocLink>. You do not need every option. You need to load a fixture and stub one response, which is enough to make the point.
+
+<Callout type="why">
+A test that fails because a third party API was briefly down is not a useful signal. Stubbing the response removes the network from the equation, so a red test means your code broke, not that someone else's did.
+</Callout>
+
+<Checkpoint id="w5-s2">You have used a fixture for test data and stubbed one response with `cy.intercept`.</Checkpoint>
+
+</Step>
+
+<Step id="w5-s3" title="Test the obvious, because the obvious is what breaks" minutes={40}>
+
+The unglamorous tests are the ones that catch real regressions. Cover the core behaviour of Comanda, plainly.
+
+Adding an order makes it appear at the right table. Marking an order delivered changes its state. The running total adds up correctly. An empty table shows the right message rather than a blank void. Four tests, each proving one honest thing.
+
+<Callout type="tip">
+"Obvious" and "tested" are not the same word. The total adding up is obvious right until the day someone edits the sum and ships it. The test is what notices, at three in the afternoon, so nobody notices at three in the morning.
+</Callout>
+
+<Checkpoint id="w5-s3">You have passing tests for adding an order, marking it delivered, the total, and the empty state.</Checkpoint>
+
+</Step>
+
+<Step id="w5-s4" title="Plan B, stated without guilt" minutes={20}>
+
+Weeks get away from people. If this one is tight, do not build Comanda. Automate <DocLink href="https://todomvc.com/">TodoMVC</DocLink> instead: add a todo, complete it, filter the list. It is a real, well known app, and a solid suite against it is a genuine portfolio piece, not a consolation prize.
+
+<Callout type="why">
+Shipping a smaller thing beats not shipping the ambitious thing. A finished TodoMVC suite is worth more than a half built Comanda, in your portfolio and in your week. Choose the one you will actually finish.
+</Callout>
+
+<Checkpoint id="w5-s4">You have decided: Comanda, or the TodoMVC plan B. Either is a real choice.</Checkpoint>
+
+</Step>
+
+<Step id="w5-s5" title="Artifact, the suite" minutes={40}>
+
+Push whichever you chose to a public repo. The Comanda repo with its Cypress suite, or an extended TodoMVC suite. Commit per milestone, so the history shows the app and the tests growing together rather than arriving in one lump.
+
+<MacNote>
+Same routine as before with GitHub Desktop if you prefer buttons. Commit the app and its tests in small steps, each with a message that says what changed.
+</MacNote>
+
+<Checkpoint id="w5-s5">An end to end suite passes against something you control, and it is public on GitHub.</Checkpoint>
+
+</Step>
