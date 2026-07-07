@@ -292,4 +292,57 @@ export const GLOSSARY: GlossaryEntry[] = [
     definition:
       "Verification asks 'did we build it right', against the spec. Validation asks 'did we build the right thing', against the actual need. You can pass one and fail the other.",
   },
+  {
+    term: "Native app",
+    definition:
+      "A mobile app built for one platform using its own language (Swift for iOS, Kotlin for Android) and installed from a store. The furthest from the web you already know.",
+  },
+  {
+    term: "Hybrid app",
+    definition:
+      "A mobile app that wraps web content inside a native shell, so one codebase runs on both platforms. Part web, part native, and it tests like both.",
+  },
+  {
+    term: "Progressive web app",
+    aliases: ["PWA"],
+    definition:
+      "A website that behaves more like an installed app: it can work offline and live on the home screen, while still being, underneath, a website.",
+  },
+  {
+    term: "Mobile web",
+    aliases: ["Responsive design"],
+    definition:
+      "A normal website viewed on a phone. Testing it is the closest mobile work to this course, and your browser's device emulation is enough to start.",
+  },
+  {
+    term: "Device fragmentation",
+    definition:
+      "The vast spread of screen sizes, resolutions, and OS versions across mobile devices. You cannot test them all, so you choose a representative set by risk.",
+  },
+  {
+    term: "Emulator and simulator",
+    definition:
+      "Software that mimics a device on your computer: an emulator on Android, a simulator on iOS. Fast and free for early checks, but not a substitute for a real device.",
+  },
+  {
+    term: "Real device testing",
+    aliases: ["Device farm", "Device cloud"],
+    definition:
+      "Testing on actual hardware, where real performance, touch, and network conditions show up. A device cloud, such as BrowserStack or Sauce Labs, rents the devices you do not own.",
+  },
+  {
+    term: "Appium",
+    definition:
+      "A cross-platform mobile automation tool that drives both iOS and Android. It has JavaScript bindings and a WebDriver-style approach, which makes it the shortest bridge from web automation to native.",
+  },
+  {
+    term: "Interruption testing",
+    definition:
+      "Checking that a mobile app survives the things a phone does to it: incoming calls, notifications, being backgrounded and resumed, or a dying battery.",
+  },
+  {
+    term: "Gesture testing",
+    definition:
+      "Testing touch input beyond a click: tap, swipe, pinch, long-press, and coping with the on-screen keyboard that covers the field you were using.",
+  },
 ];
