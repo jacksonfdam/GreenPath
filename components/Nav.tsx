@@ -10,6 +10,7 @@ const LINKS = [
   { href: "/portfolio", label: "Portfolio" },
   { href: "/terminal-101", label: "Terminal 101" },
   { href: "/ai-help", label: "AI help" },
+  { href: "/glossary", label: "Glossary" },
   { href: "/resources", label: "Resources" },
 ];
 
