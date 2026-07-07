@@ -18,13 +18,6 @@ The name is the green of a passing test run.
 - A portfolio page collects those artifacts into an index you can send with an
   application.
 
-## Stack
-
-- Next.js (App Router) with TypeScript
-- Tailwind CSS
-- MDX content via `next-mdx-remote`, frontmatter parsed with `gray-matter`
-- No backend, no database, no auth. Progress lives in the browser.
-
 ## Running locally
 
 ```
@@ -38,36 +31,3 @@ Then open the printed local URL. To produce the production build:
 npm run build
 npm run start
 ```
-
-## Content
-
-Codelabs live in `content/codelabs` as MDX files with frontmatter. Steps are
-delimited with a `<Step id title minutes>` component, and each ends in a
-`<Checkpoint id>` whose id matches the step. Step ids are stable and globally
-unique (`w{week}-s{n}`); renumbering a shipped step would wipe saved progress,
-so they are treated as permanent.
-
-Regenerate the plain-text checklist backup after editing content:
-
-```
-npm run progress
-```
-
-## Deploying
-
-Push to a public GitHub repo, then import it at
-[vercel.com](https://vercel.com/). Next.js needs no configuration. Every push to
-`main` redeploys.
-
-## Routes
-
-- `/` home, with the overall progress ring
-- `/setup` install every tool the course needs, in order
-- `/codelabs` the index of all seven
-- `/codelabs/[slug]` a single codelab, one step at a time
-- `/progress` per week and overall completion, streak, and a reset
-- `/portfolio` paste your artifact links, get a tidy index
-- `/terminal-101` the macOS terminal survival guide
-- `/ai-help` how to use AI agents through the course, and how not to
-- `/glossary` a searchable QA and testing glossary
-- `/resources` the master link list
