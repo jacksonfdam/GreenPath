@@ -1,0 +1,98 @@
+---
+week: 1
+slug: "waking-up-javascript"
+title: "Waking up JavaScript"
+summary: "Shake the dust off, meet the QA mindset."
+estimatedMinutes: 180
+prerequisites: ["A Mac", "A browser", "Mild optimism"]
+outcomes:
+  - "Read and write modern JavaScript comfortably enough to test with it"
+  - "Explain what testing is for in one sentence without using the word quality twice"
+artifact:
+  name: "QA vocabulary cheat sheet"
+  where: "A markdown file in your notes repo"
+---
+
+<Step id="w1-s1" title="Install Node" minutes={20}>
+
+Node is JavaScript that runs outside a browser. Every tool later in this course sits on top of it, so this is the foundation and not an optional extra.
+
+Take the kind path first. Go to <DocLink href="https://nodejs.org/">nodejs.org</DocLink>, click the big button marked LTS, and open the `.pkg` file that downloads. Double click it, then click through the installer the way you would any other Mac app. LTS stands for long term support, which is the boring, dependable release. Boring is what you want holding up your tools.
+
+<MacNote>
+To check it worked, open Terminal. Press Command and Space to bring up Spotlight, type Terminal, and press Enter. Then run the commands below. On a Mac, a command that prints a version number and nothing else has worked perfectly. It is not being terse to spite you.
+</MacNote>
+
+<Terminal
+  note="Ask Node and npm which versions you have. Two numbers means success."
+  commands={["node -v", "npm -v"]}
+/>
+
+<Callout type="why">
+Node lets you run JavaScript outside the browser, and npm is the tool that installs the packages you will lean on later. If both print a version, the rest of the course has a floor to stand on.
+</Callout>
+
+<Checkpoint id="w1-s1">You can run `node -v` and see a version number.</Checkpoint>
+
+</Step>
+
+<Step id="w1-s2" title="Modern JavaScript, the parts testing uses" minutes={40}>
+
+You knew JavaScript before, from the era of `var` and callbacks. The language moved on while you were away, and mostly for the better. You do not need all of it. You need the parts that testing actually leans on.
+
+The short list: `let` and `const` instead of `var`, arrow functions, template literals, destructuring, the array methods `map`, `filter`, and `find`, and the big one, Promises with `async` and `await`. Asynchronous code is most of what testing touches, because tests wait for pages to load and requests to return, and they do it without freezing everything else.
+
+Read the parts you need at <DocLink href="https://javascript.info/">javascript.info</DocLink>, and keep <DocLink href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">MDN JavaScript</DocLink> open as the reference. You will not remember all of it, and you are not meant to. You are meant to know where to look.
+
+Try snippets as you read. Node ships with a REPL, a live prompt where you type JavaScript and see the result immediately.
+
+<Terminal
+  note="Open the live JavaScript prompt. Type an expression, press Enter, see the result."
+  commands={["node"]}
+/>
+
+<MacNote>
+Once the REPL is open, the prompt changes to a `>`. Type something like `[1, 2, 3].map(n => n * 2)` and press Enter. To leave, type `.exit` and press Enter, or hold Control and press D. Closing the prompt does not close the course.
+</MacNote>
+
+<Callout type="tip">
+Destructuring and array methods are not academic. A test that reads a JSON response and checks one field is destructuring plus a `find`. You are learning the exact moves you will use in week three.
+</Callout>
+
+<Checkpoint id="w1-s2">You have run at least one modern JavaScript snippet in the Node REPL and left it again.</Checkpoint>
+
+</Step>
+
+<Step id="w1-s3" title="What testing is actually for" minutes={40}>
+
+Testing is not about proving software is perfect. Nothing is, and a tester who promises otherwise is selling something. Testing is about making risk visible and reducing uncertainty, so the people deciding whether to ship know what they are shipping.
+
+A few frames worth holding. Test levels describe how much of the system you are looking at: component, integration, system, and acceptance. Test types describe what you are looking for: functional, regression, exploratory. And risk based testing is the sensible habit of spending your limited time where a failure would hurt most, rather than testing everything equally and running out of week.
+
+Read the concepts in the <DocLink href="https://www.istqb.org/">ISTQB Foundation</DocLink> syllabus, which is free to download. Read it for the ideas and the shared vocabulary. The exam is optional and you can decide about it later. For the human side of the craft, <DocLink href="https://www.ministryoftesting.com/">Ministry of Testing</DocLink> is where testers talk about the job like it is one.
+
+<Callout type="why">
+The role you are aiming at frames quality as reducing uncertainty, not as a stamp of approval. If you internalise one thing this week, make it that. It changes how you write every test case that follows.
+</Callout>
+
+<Checkpoint id="w1-s3">You can say, in one sentence, what testing is for, and it mentions risk or uncertainty.</Checkpoint>
+
+</Step>
+
+<Step id="w1-s4" title="Artifact, your QA vocabulary cheat sheet" minutes={30}>
+
+Now you make the thing that makes this week stick. Write a one page QA vocabulary cheat sheet, in your own words. Test levels, test types, risk based testing, and any term that felt slippery. Not copied from the syllabus. Phrased by you, badly if necessary, then tidied.
+
+Keep it as a markdown file. If you already have a notes repo, put it there. If you do not, a single `qa-cheat-sheet.md` on your Desktop is fine for now; week two sets up somewhere better to keep it.
+
+<Callout type="why">
+You will forget a definition you read. You are far less likely to forget one you had to phrase yourself. The writing is the study. The file is just the receipt.
+</Callout>
+
+<Callout type="tip">
+Keep it to one page. A cheat sheet you can read in two minutes gets read. A ten page one becomes a document you never open, which is a different kind of artifact entirely.
+</Callout>
+
+<Checkpoint id="w1-s4">Node runs, and a cheat sheet you wrote yourself exists as a markdown file.</Checkpoint>
+
+</Step>
