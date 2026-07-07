@@ -68,6 +68,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       const raw = window.localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as ProgressState;
+        // One-time hydration from localStorage, deliberately after mount.
+        // Reading it during render would cause a server/client mismatch.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setState({ ...EMPTY_STATE, ...parsed });
       }
     } catch {
