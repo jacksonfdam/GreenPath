@@ -1,0 +1,88 @@
+---
+week: 2
+slug: "bug-hunt"
+title: "Bug Hunt"
+summary: "Turn a requirement into test cases, and hunt bugs with method rather than luck."
+estimatedMinutes: 210
+prerequisites: ["Week 1 done", "A browser", "A note-taking habit"]
+outcomes:
+  - "Turn a plain requirement into prioritised test cases"
+  - "Write a bug report a developer can reproduce without phoning you"
+artifact:
+  name: "bug-hunt repo"
+  where: "A public GitHub repo of your test plan, cases, and reports"
+---
+
+<Step id="w2-s1" title="Test design techniques" minutes={35}>
+
+Bugs are easier to find on purpose than by luck. Three techniques do most of the heavy lifting, and none of them require maths beyond counting.
+
+Equivalence partitioning: inputs fall into groups that behave the same, so you test one from each group instead of all of them. Boundary value analysis: bugs cluster at the edges, so if a field accepts one to ten, you test zero, one, ten, and eleven, because that is where the off by one errors live. Decision tables: when the outcome depends on several conditions at once, you lay out every combination in a grid so none quietly goes untested.
+
+Work through small examples until they click. <DocLink href="https://testautomationu.applitools.com/">Test Automation University</DocLink> has free courses on exactly this, taught by people who test for a living.
+
+<Callout type="why">
+These techniques are how you test thoroughly without testing infinitely. There are always more inputs than time. The skill is choosing the ones that actually tell you something.
+</Callout>
+
+<Checkpoint id="w2-s1">You can explain boundary value analysis with a real example, like a field that accepts one to ten.</Checkpoint>
+
+</Step>
+
+<Step id="w2-s2" title="Meet the target" minutes={30}>
+
+You need something broken to practise on, and helpfully someone built exactly that. <DocLink href="https://www.saucedemo.com/">SauceDemo</DocLink> is a fake shop with bugs built in on purpose, which makes it the safest place in tech to break things.
+
+The login accepts the username `standard_user` with the password `secret_sauce`. There are other users designed to misbehave. `problem_user` gets the product images wrong. `performance_glitch_user` is slow on purpose, so you can watch what a sluggish page does to your patience and your assumptions. Log in as each one and note what breaks, and how.
+
+<Callout type="tip">
+Do not fix anything, and do not report the built-in bugs as if they were news. The point is to practise noticing, describing, and reproducing. The bugs are the exercise equipment, not the emergency.
+</Callout>
+
+<Checkpoint id="w2-s2">You have logged in as `standard_user`, `problem_user`, and `performance_glitch_user` and noted how each behaves.</Checkpoint>
+
+</Step>
+
+<Step id="w2-s3" title="Write test cases" minutes={45}>
+
+Now turn what you saw into something a stranger could follow. Start with a short test plan: what you are testing, what you are not, and why. A page is plenty. Then write a set of test cases, each with a clear title, steps, and an expected result.
+
+Order them by risk and impact, not by whatever caught your eye first. Login failing is a bigger deal than a misaligned footer, so it goes near the top. This is risk based testing from week one, applied to a real screen.
+
+<Callout type="why">
+Prioritising by risk is the difference between a tester and someone who clicks around. Anyone can list a hundred cases. Knowing which ten matter most when the release is tomorrow is the actual job.
+</Callout>
+
+<Checkpoint id="w2-s3">You have a short test plan and a set of test cases ordered by risk, not by order of discovery.</Checkpoint>
+
+</Step>
+
+<Step id="w2-s4" title="Exploratory session and bug reports" minutes={40}>
+
+Scripted cases catch the bugs you predicted. Exploratory testing catches the ones you did not. Set a timer, thirty minutes is plenty, and go looking for trouble with intent: try odd inputs, click things in the wrong order, do what a distracted human would do.
+
+Then write two or three bug reports. A good bug report lets a developer reproduce the problem without phoning you, which is the highest compliment a bug report can earn. Each one needs steps to reproduce, the expected result, the actual result, and the environment (browser, which user, which page).
+
+<Callout type="tip">
+Write the steps as if for someone who has never seen the app. "Log in as `standard_user`, add the backpack to the cart, click the cart icon" beats "add something and check the cart". Specific reproduces. Vague gets reassigned back to you.
+</Callout>
+
+<Checkpoint id="w2-s4">You have run a timeboxed exploratory session and written two or three reproducible bug reports.</Checkpoint>
+
+</Step>
+
+<Step id="w2-s5" title="Artifact, the bug-hunt repo" minutes={30}>
+
+Package the week into a repo. A folder called `bug-hunt` with the plan, the cases, and the reports as markdown files. This is your first portfolio piece, and it shows something a certificate cannot: that you can think about testing and write it down clearly.
+
+<MacNote>
+First time with git? Skip the terminal for now. Install <DocLink href="https://desktop.github.com/">GitHub Desktop</DocLink>, the version with buttons. Sign in, choose "Create a New Repository", and point it at your `bug-hunt` folder. Write a message in the commit box, click "Commit to main", then "Publish repository". Make sure the box marked "Keep this code private" is unchecked, or your portfolio piece will be a portfolio secret.
+</MacNote>
+
+<Callout type="why">
+Public matters here. A private repo you describe in an interview is a story. A public one you link is evidence. Employers can tell the difference, and so can you.
+</Callout>
+
+<Checkpoint id="w2-s5">A public `bug-hunt` repo exists with real reports in it.</Checkpoint>
+
+</Step>
