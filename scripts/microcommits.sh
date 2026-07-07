@@ -86,6 +86,9 @@ commit "feat: add portfolio index" \
 commit "feat: add macOS terminal survival guide" \
   app/terminal-101/page.tsx
 
+commit "feat: add mobile QA principles page" \
+  app/mobile-qa/page.tsx
+
 commit "feat: add resources link list" \
   app/resources/page.tsx
 
