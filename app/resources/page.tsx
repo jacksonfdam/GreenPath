@@ -69,6 +69,25 @@ const GROUPS: { heading: string; items: Resource[] }[] = [
     ],
   },
   {
+    heading: "Mobile",
+    items: [
+      { href: "https://appium.io/", label: "Appium", note: "Cross-platform mobile automation with JavaScript bindings. The bridge from web to native." },
+      { href: "https://developer.android.com/training/testing/espresso", label: "Espresso", note: "Google's UI testing framework for Android." },
+      { href: "https://developer.apple.com/documentation/xctest", label: "XCUITest", note: "Apple's UI testing framework for iOS." },
+      { href: "https://www.browserstack.com/", label: "BrowserStack", note: "A cloud of real devices and browsers to test on." },
+    ],
+  },
+  {
+    heading: "AI and prompting",
+    items: [
+      { href: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview", label: "Anthropic prompt engineering", note: "Clear, practical prompting guidance." },
+      { href: "https://platform.openai.com/docs/guides/prompting", label: "OpenAI prompting guide", note: "Strategies and examples for the GPT models." },
+      { href: "https://ai.google.dev/gemini-api/docs/prompting-strategies", label: "Gemini prompting strategies", note: "Google's prompting advice, broadly applicable." },
+      { href: "https://www.promptingguide.ai/", label: "Prompting Guide", note: "A vendor-neutral reference, deeper if you want theory." },
+      { href: "https://github.com/github/spec-kit", label: "GitHub Spec Kit", note: "A readable example of spec-driven work with AI agents." },
+    ],
+  },
+  {
     heading: "The role",
     items: [
       { href: "https://careers.umain.com/jobs/6665867-qa-engineer", label: "Umain QA Engineer posting", note: "The job this whole path is pointed at." },
