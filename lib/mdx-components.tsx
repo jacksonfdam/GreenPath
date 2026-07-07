@@ -6,6 +6,7 @@ import MacNote from "@/components/MacNote";
 import Callout from "@/components/Callout";
 import DocLink from "@/components/DocLink";
 import CodeFile from "@/components/CodeFile";
+import Exercise from "@/components/Exercise";
 
 /** The component map handed to compileMDX so codelab authors can use these
  *  tags directly in MDX. */
@@ -17,4 +18,5 @@ export const mdxComponents: MDXComponents = {
   Callout,
   DocLink,
   CodeFile,
+  Exercise,
 };
