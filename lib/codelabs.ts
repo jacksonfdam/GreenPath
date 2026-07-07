@@ -34,11 +34,23 @@ function parseSteps(source: string): StepMeta[] {
   return steps;
 }
 
+/** Map each codelab's public slug (from frontmatter) to its file name. The
+ *  file name is prefixed with the week for ordering on disk; routes use the
+ *  clean frontmatter slug instead. */
+function slugToFile(): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const file of fs.readdirSync(CONTENT_DIR)) {
+    if (!file.endsWith(".mdx")) continue;
+    const raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf-8");
+    const { data } = matter(raw);
+    const slug = (data as CodelabFrontmatter).slug;
+    if (slug) map.set(slug, file);
+  }
+  return map;
+}
+
 export function getCodelabSlugs(): string[] {
-  return fs
-    .readdirSync(CONTENT_DIR)
-    .filter((file) => file.endsWith(".mdx"))
-    .map((file) => file.replace(/\.mdx$/, ""));
+  return Array.from(slugToFile().keys());
 }
 
 export function getCodelabSource(slug: string): {
@@ -46,8 +58,11 @@ export function getCodelabSource(slug: string): {
   frontmatter: CodelabFrontmatter;
   steps: StepMeta[];
 } {
-  const filePath = path.join(CONTENT_DIR, `${slug}.mdx`);
-  const raw = fs.readFileSync(filePath, "utf-8");
+  const file = slugToFile().get(slug);
+  if (!file) {
+    throw new Error(`No codelab found for slug: ${slug}`);
+  }
+  const raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf-8");
   const { content, data } = matter(raw);
 
   return {
