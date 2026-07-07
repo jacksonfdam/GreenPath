@@ -2,30 +2,79 @@
 week: 2
 slug: "bug-hunt"
 title: "Bug Hunt"
-summary: "Turn a requirement into test cases, and hunt bugs with method rather than luck."
-estimatedMinutes: 210
+summary: "Turn a requirement into test cases with real techniques, then hunt bugs with method."
+estimatedMinutes: 260
 prerequisites: ["Week 1 done", "A browser", "A note-taking habit"]
 outcomes:
-  - "Turn a plain requirement into prioritised test cases"
+  - "Derive test cases using equivalence partitioning, boundary values, and decision tables"
   - "Write a bug report a developer can reproduce without phoning you"
 artifact:
   name: "bug-hunt repo"
   where: "A public GitHub repo of your test plan, cases, and reports"
 ---
 
-<Step id="w2-s1" title="Test design techniques" minutes={35}>
+<Step id="w2-s1" title="Equivalence partitioning and boundary values" minutes={40}>
 
-Bugs are easier to find on purpose than by luck. Three techniques do most of the heavy lifting, and none of them require maths beyond counting.
+Bugs are easier to find on purpose than by luck. Two techniques do most of the heavy lifting, and neither requires maths beyond counting.
 
-Equivalence partitioning: inputs fall into groups that behave the same, so you test one from each group instead of all of them. Boundary value analysis: bugs cluster at the edges, so if a field accepts one to ten, you test zero, one, ten, and eleven, because that is where the off by one errors live. Decision tables: when the outcome depends on several conditions at once, you lay out every combination in a grid so none quietly goes untested.
+Equivalence partitioning is the idea that inputs fall into groups that all behave the same way, so testing one value from each group tells you what testing all of them would, at a fraction of the effort. Boundary value analysis adds the observation that bugs cluster at the edges of those groups, so you test the values right at and just past each edge.
 
-Work through small examples until they click. <DocLink href="https://testautomationu.applitools.com/">Test Automation University</DocLink> has free courses on exactly this, taught by people who test for a living.
+Here is a worked example. Take a requirement: an age field accepts whole numbers from 18 to 65 inclusive, and rejects everything else.
+
+<CodeFile name="Worked example: age 18 to 65">{`Partitions (equivalence classes):
+  - below range:   anything less than 18   -> rejected
+  - in range:      18 to 65                -> accepted
+  - above range:   anything more than 65   -> rejected
+
+One representative from each partition:
+  10   -> rejected
+  40   -> accepted
+  80   -> rejected
+
+Boundary values (the edges, and one step past each):
+  17   -> rejected   (just below the lower edge)
+  18   -> accepted   (the lower edge)
+  65   -> accepted   (the upper edge)
+  66   -> rejected   (just past the upper edge)`}</CodeFile>
+
+Three partition tests confirm the broad behaviour. Four boundary tests catch the off-by-one errors that live at the edges, the classic "should it be less-than or less-than-or-equal" bug. Seven precise tests replace the hundred vague ones you might have written.
+
+<Exercise title="derive it yourself">
+Requirement: a password must be between 8 and 20 characters. Write out the three equivalence partitions, one representative value for each, and the four boundary values with their expected results. Do it on paper or in a note before reading on. This is the exact skill the rest of the week rests on.
+</Exercise>
 
 <Callout type="why">
-These techniques are how you test thoroughly without testing infinitely. There are always more inputs than time. The skill is choosing the ones that actually tell you something.
+These techniques are how you test thoroughly without testing infinitely. There are always more inputs than time. The skill is choosing the few that actually tell you something, and defending that choice when someone asks why you did not test more.
 </Callout>
 
-<Checkpoint id="w2-s1">You can explain boundary value analysis with a real example, like a field that accepts one to ten.</Checkpoint>
+<Checkpoint id="w2-s1">You can derive equivalence partitions and boundary values for a simple ranged input, like the password length exercise.</Checkpoint>
+
+</Step>
+
+<Step id="w2-s6" title="Decision tables, for combinations" minutes={30}>
+
+Some behaviour depends on several conditions at once, and testing them one at a time misses the interactions. A decision table lays out every combination of conditions and the outcome each should produce, so nothing slips through untested.
+
+Worked example: a login form. It succeeds only when the username is known and the password matches. Two conditions, so four combinations.
+
+<CodeFile name="Worked example: login decision table">{`Rule                | Username known? | Password matches? | Expected result
+--------------------|-----------------|-------------------|-------------------
+1                   | yes             | yes               | logged in
+2                   | yes             | no                | error: bad password
+3                   | no              | yes               | error: unknown user
+4                   | no              | no                | error: unknown user`}</CodeFile>
+
+Each row is a test case. Rows three and four raise a real question a tester should ask: should a wrong password on an unknown user say "unknown user" or "bad password"? Revealing the same message for both is often deliberate, so an attacker cannot learn which usernames exist. A decision table surfaces that design decision instead of letting it hide.
+
+<Exercise title="two conditions, four rows">
+A shop offers free shipping when the order is over 50 dollars OR the customer is a member. Build the decision table: two conditions, four rows, and the expected result for each. Notice which rows give free shipping and why, and whether the requirement is actually clear about all four.
+</Exercise>
+
+<Callout type="tip">
+Decision tables grow fast: three conditions give eight rows, four give sixteen. When that happens, it is often a sign the rule itself is too tangled, which is useful feedback to hand back to whoever wrote the requirement.
+</Callout>
+
+<Checkpoint id="w2-s6">You have built a decision table for a two-condition rule and identified any ambiguous rows.</Checkpoint>
 
 </Step>
 
@@ -33,47 +82,83 @@ These techniques are how you test thoroughly without testing infinitely. There a
 
 You need something broken to practise on, and helpfully someone built exactly that. <DocLink href="https://www.saucedemo.com/">SauceDemo</DocLink> is a fake shop with bugs built in on purpose, which makes it the safest place in tech to break things.
 
-The login accepts the username `standard_user` with the password `secret_sauce`. There are other users designed to misbehave. `problem_user` gets the product images wrong. `performance_glitch_user` is slow on purpose, so you can watch what a sluggish page does to your patience and your assumptions. Log in as each one and note what breaks, and how.
+The login accepts the username `standard_user` with the password `secret_sauce`. There are other users designed to misbehave. `problem_user` gets the product images wrong. `performance_glitch_user` is slow on purpose. Log in as each one and record what you observe, precisely.
+
+<Exercise title="observe like a tester">
+Log in as all three users and, for each, write down three specific observations. Not "it's broken" but "as `problem_user`, every product shows the same dog image instead of the product photo". Specific observations become bug reports later. Vague ones become homework you have to redo.
+</Exercise>
 
 <Callout type="tip">
 Do not fix anything, and do not report the built-in bugs as if they were news. The point is to practise noticing, describing, and reproducing. The bugs are the exercise equipment, not the emergency.
 </Callout>
 
-<Checkpoint id="w2-s2">You have logged in as `standard_user`, `problem_user`, and `performance_glitch_user` and noted how each behaves.</Checkpoint>
+<Checkpoint id="w2-s2">You have logged in as `standard_user`, `problem_user`, and `performance_glitch_user` and recorded specific observations for each.</Checkpoint>
 
 </Step>
 
 <Step id="w2-s3" title="Write test cases" minutes={45}>
 
-Now turn what you saw into something a stranger could follow. Start with a short test plan: what you are testing, what you are not, and why. A page is plenty. Then write a set of test cases, each with a clear title, steps, and an expected result.
+Now turn what you saw into something a stranger could follow. Start with a short test plan: what you are testing, what you are not, and why. A page is plenty. Then write test cases, each with a clear title, preconditions, steps, and an expected result.
 
-Order them by risk and impact, not by whatever caught your eye first. Login failing is a bigger deal than a misaligned footer, so it goes near the top. This is risk based testing from week one, applied to a real screen.
+Here is the shape a good test case takes. Consistency matters more than cleverness; a reviewer should be able to scan ten of these quickly.
+
+<CodeFile name="Test case template, worked">{`ID:            TC-01
+Title:         Standard user can log in
+Preconditions: On the SauceDemo login page
+Steps:
+  1. Enter "standard_user" in the username field
+  2. Enter "secret_sauce" in the password field
+  3. Click the Login button
+Expected:      The inventory page loads and shows the product list
+Priority:      High  (login blocks everything else)`}</CodeFile>
+
+Order your cases by risk and impact, not by whatever caught your eye first. Login failing is a bigger deal than a misaligned footer, so it goes near the top. This is risk based testing from week one, applied to a real screen.
+
+<Exercise title="write five, ranked">
+Write five test cases for SauceDemo using the template above: at least one login case, one add-to-cart case, and one deliberately negative case such as a wrong password. Then add a Priority to each and sort them highest first. The sorting is the part that shows judgement.
+</Exercise>
 
 <Callout type="why">
 Prioritising by risk is the difference between a tester and someone who clicks around. Anyone can list a hundred cases. Knowing which ten matter most when the release is tomorrow is the actual job.
 </Callout>
 
-<Checkpoint id="w2-s3">You have a short test plan and a set of test cases ordered by risk, not by order of discovery.</Checkpoint>
+<Checkpoint id="w2-s3">You have a short test plan and at least five test cases, each with steps, an expected result, and a priority, ordered by risk.</Checkpoint>
 
 </Step>
 
 <Step id="w2-s4" title="Exploratory session and bug reports" minutes={40}>
 
-Scripted cases catch the bugs you predicted. Exploratory testing catches the ones you did not. Set a timer, thirty minutes is plenty, and go looking for trouble with intent: try odd inputs, click things in the wrong order, do what a distracted human would do.
+Scripted cases catch the bugs you predicted. Exploratory testing catches the ones you did not. Set a timer, thirty minutes is plenty, and go looking for trouble with intent: odd inputs, actions in the wrong order, the things a distracted human does. Keep a running note of what you tried and what happened, because you will not remember later.
 
-Then write two or three bug reports. A good bug report lets a developer reproduce the problem without phoning you, which is the highest compliment a bug report can earn. Each one needs steps to reproduce, the expected result, the actual result, and the environment (browser, which user, which page).
+Then write two or three bug reports. A good bug report lets a developer reproduce the problem without phoning you, which is the highest compliment a bug report can earn. Here is one worked all the way through.
+
+<CodeFile name="Bug report, worked">{`Title:       problem_user sees identical images for every product
+Environment: SauceDemo, Chrome on macOS, user "problem_user"
+Steps to reproduce:
+  1. Go to saucedemo.com
+  2. Log in as "problem_user" / "secret_sauce"
+  3. Look at the product images on the inventory page
+Expected:    Each product shows its own distinct image
+Actual:      Every product shows the same image
+Severity:    Medium  (products are still identifiable by name and price)`}</CodeFile>
+
+Notice the parts. A title that states the problem, not the symptom vaguely. Enough environment detail to reproduce. Numbered steps a stranger could follow. Expected and actual, side by side, so the gap is obvious. And a severity that reflects real impact, argued in a few words.
+
+<Exercise title="reproduce, then report">
+From your exploratory notes, pick two issues and write them up in the format above. Test your own reports: hand them to yourself an hour later, follow only the written steps, and see if you land on the same bug. If you cannot, the report is not done.
+</Exercise>
 
 <Callout type="tip">
 Write the steps as if for someone who has never seen the app. "Log in as `standard_user`, add the backpack to the cart, click the cart icon" beats "add something and check the cart". Specific reproduces. Vague gets reassigned back to you.
 </Callout>
 
-<Checkpoint id="w2-s4">You have run a timeboxed exploratory session and written two or three reproducible bug reports.</Checkpoint>
+<Checkpoint id="w2-s4">You have run a timeboxed exploratory session and written two or three bug reports you verified by following your own steps.</Checkpoint>
 
 </Step>
 
 <Step id="w2-s5" title="Artifact, the bug-hunt repo" minutes={30}>
 
-Package the week into a repo. A folder called `bug-hunt` with the plan, the cases, and the reports as markdown files. This is your first portfolio piece, and it shows something a certificate cannot: that you can think about testing and write it down clearly.
+Package the week into a repo. A folder called `bug-hunt` with the plan, the cases, the decision tables, and the reports as markdown files. This is your first portfolio piece, and it shows something a certificate cannot: that you can think about testing and write it down clearly.
 
 <MacNote>
 First time with git? Skip the terminal for now. Install <DocLink href="https://desktop.github.com/">GitHub Desktop</DocLink>, the version with buttons. Sign in, choose "Create a New Repository", and point it at your `bug-hunt` folder. Write a message in the commit box, click "Commit to main", then "Publish repository". Make sure the box marked "Keep this code private" is unchecked, or your portfolio piece will be a portfolio secret.
@@ -83,6 +168,6 @@ First time with git? Skip the terminal for now. Install <DocLink href="https://d
 Public matters here. A private repo you describe in an interview is a story. A public one you link is evidence. Employers can tell the difference, and so can you.
 </Callout>
 
-<Checkpoint id="w2-s5">A public `bug-hunt` repo exists with real reports in it.</Checkpoint>
+<Checkpoint id="w2-s5">A public `bug-hunt` repo exists with your plan, cases, and reproducible reports in it.</Checkpoint>
 
 </Step>
