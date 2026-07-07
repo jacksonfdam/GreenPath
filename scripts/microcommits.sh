@@ -95,6 +95,9 @@ commit "feat: add environment setup page" \
 commit "feat: add AI help guide" \
   app/ai-help/page.tsx
 
+commit "feat: add searchable QA glossary" \
+  lib/glossary.ts components/GlossaryList.tsx app/glossary/page.tsx
+
 commit "feat: add not-found page and site icon" \
   app/not-found.tsx app/icon.svg
 
