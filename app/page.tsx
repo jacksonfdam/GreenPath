@@ -48,7 +48,12 @@ export default function HomePage() {
 
       <p className="mt-12 max-w-prose text-sm text-slate-500 dark:text-slate-400">
         Progress is saved in this browser, on this Mac. No login, no account, no one
-        watching over your shoulder. New to the terminal? The{" "}
+        watching over your shoulder. First time on this machine? Install everything on
+        the{" "}
+        <Link href="/setup" className="text-pass underline underline-offset-2">
+          Setup
+        </Link>{" "}
+        page before week one. New to the terminal? The{" "}
         <Link href="/terminal-101" className="text-pass underline underline-offset-2">
           Terminal 101
         </Link>{" "}
