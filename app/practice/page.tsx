@@ -72,6 +72,80 @@ Expect:  A confirmation screen appears, showing the same date,
           is correct, write down what the requirement would need to say.
         </Callout>
 
+        <h2>Ten more, from apps you already use</h2>
+        <p>
+          Once the booking screen clicks, keep the habit going on apps you open every
+          day. For each one, first describe how it is supposed to behave, then get
+          suspicious and explore the edges. No wireframe needed: the app is right there
+          in your pocket. Write the cases in the same plain language.
+        </p>
+        <ol>
+          <li>
+            <strong>Alarm clock.</strong> Describe setting, snoozing, and deleting an
+            alarm. Explore: an alarm for a time that already passed today, two alarms on
+            the same minute, snooze pressed ten times, an alarm that should ring across
+            midnight.
+          </li>
+          <li>
+            <strong>A messaging app.</strong> Describe sending a message to one person
+            and to a group. Explore: sending with the network off then back on, a message
+            that is only spaces, editing or deleting after it was read, pasting an
+            enormous wall of text.
+          </li>
+          <li>
+            <strong>The phone calculator.</strong> Describe the basic operations and the
+            clear button. Explore: dividing by zero, a very long number, several decimal
+            points in a row, rotating the phone mid-sum, what the percent key actually
+            does.
+          </li>
+          <li>
+            <strong>A weather app.</strong> Describe how it shows today and the week.
+            Explore: switching Celsius and Fahrenheit, denying location permission, a city
+            that does not exist, opening it with no connection.
+          </li>
+          <li>
+            <strong>Food delivery or a ride app.</strong> Describe placing and cancelling
+            an order. Explore: an address with a typo, cancelling after it is confirmed,
+            removing every item from the basket, what the total does when a coupon is
+            added.
+          </li>
+          <li>
+            <strong>A music player.</strong> Describe play, pause, skip, and building a
+            playlist. Explore: skipping past the last track, playing with the network off,
+            an empty playlist, what playback does when a call comes in.
+          </li>
+          <li>
+            <strong>A bank transfer screen.</strong> Describe sending money to someone.
+            Explore: an amount of 0, a negative amount, more than the balance, many
+            decimal places, a currency symbol typed into the number field, and whether the
+            confirmation shows exactly what you entered.
+          </li>
+          <li>
+            <strong>A calendar event.</strong> Describe creating an event with a start and
+            an end. Explore: an end time before the start, an all-day event, a repeating
+            event, a date on 29 February, an event that crosses midnight or a change of
+            time zone.
+          </li>
+          <li>
+            <strong>Login and password reset.</strong> Describe signing in and resetting a
+            forgotten password. Explore: the wrong password several times over, a reset for
+            an email with no account, the reset link used twice, passwords at the very
+            edge of the length rules.
+          </li>
+          <li>
+            <strong>A shopping cart and checkout.</strong> Describe adding items and paying.
+            Explore: a quantity of 0 or 999, an item that sells out while it sits in your
+            basket, an expired coupon, a required field left blank, and pressing back right
+            after paying.
+          </li>
+        </ol>
+        <Callout type="tip">
+          Notice the patterns repeating across all ten: money and quantities want their
+          boundaries pushed, dates want distrusting, networks want cutting, and
+          permissions want denying. Learn to reach for those four moves on any screen and
+          you will find bugs on apps their own teams have not.
+        </Callout>
+
         <h2>When you are done</h2>
         <p>
           Save your list as a markdown file and keep it. It shows the same skill your{" "}
