@@ -17,6 +17,7 @@ const EMPTY_STATE: ProgressState = {
   version: 1,
   steps: {},
   portfolio: {},
+  lastStep: {},
   lastActive: null,
   streakDays: 0,
 };
@@ -54,6 +55,8 @@ interface ProgressContextValue {
   setStepDone: (id: string, done: boolean) => void;
   getPortfolio: (week: string) => string;
   setPortfolio: (week: string, url: string) => void;
+  getLastStep: (slug: string) => string;
+  setLastStep: (slug: string, stepId: string) => void;
   reset: () => void;
 }
 
@@ -136,6 +139,18 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const setLastStep = useCallback((slug: string, stepId: string) => {
+    setState((prev) => {
+      const next = { ...prev, lastStep: { ...prev.lastStep, [slug]: stepId } };
+      try {
+        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }, []);
+
   const reset = useCallback(() => {
     persist({ ...EMPTY_STATE });
   }, [persist]);
@@ -148,9 +163,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       setStepDone,
       getPortfolio: (week: string) => state.portfolio[week] ?? "",
       setPortfolio,
+      getLastStep: (slug: string) => state.lastStep[slug] ?? "",
+      setLastStep,
       reset,
     }),
-    [state, hydrated, setStepDone, setPortfolio, reset],
+    [state, hydrated, setStepDone, setPortfolio, setLastStep, reset],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;

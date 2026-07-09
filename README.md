@@ -65,6 +65,7 @@ Push to a public GitHub repo, then import it at
 - `/setup` install every tool the course needs, in order
 - `/codelabs` the index of all seven
 - `/codelabs/[slug]` a single codelab, one step at a time
+- `/practice` write test cases from a wireframe, in plain language
 - `/progress` per week and overall completion, streak, and a reset
 - `/portfolio` paste your artifact links, get a tidy index
 - `/terminal-101` the macOS terminal survival guide

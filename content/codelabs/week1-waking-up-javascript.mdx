@@ -52,7 +52,9 @@ Once it is open, the prompt changes to a `>`. Type something and press Enter. To
 
 Now the syntax that changed while you were away. Three pieces, all muscle memory once you have typed them a few times.
 
-First, `let` and `const` replace `var`. Use `const` by default, for values that do not get reassigned, and `let` only when you genuinely need to reassign. `var` still works, but it has scoping surprises that `const` and `let` quietly fixed. Second, arrow functions are a shorter way to write functions: `(x) => x * 2` is a function that doubles its input. Third, template literals let you build strings with backticks and `${...}` holes, so instead of `"Hello " + name` you write `` `Hello ${name}` `` and stop counting your quote marks.
+- **`let` and `const` replace `var`.** Use `const` by default, for values that do not get reassigned, and `let` only when you genuinely need to reassign. `var` still works, but it has scoping surprises that `const` and `let` quietly fixed.
+- **Arrow functions** are a shorter way to write functions. `(x) => x * 2` is a function that doubles its input.
+- **Template literals** build strings with backticks and `${...}` holes. Instead of `"Hello " + name` you write `` `Hello ${name}` `` and stop counting your quote marks.
 
 Type this session into the REPL, line by line, and watch the results. The `// =>` comments show what to expect.
 
@@ -112,7 +114,12 @@ nums.find((n) => n > 4);
 nums.reduce((total, n) => total + n, 0);
 // => 31`}</CodeFile>
 
-Read each method as a sentence. `filter` keeps the items that pass a test. `map` transforms every item into a new one. `find` returns the first item that passes a test, or `undefined` if none do. `reduce` boils a whole array down to a single value, here a sum, starting from `0`.
+Read each method as a sentence:
+
+- **`filter`** keeps the items that pass a test.
+- **`map`** transforms every item into a new one.
+- **`find`** returns the first item that passes a test, or `undefined` if none do.
+- **`reduce`** boils a whole array down to a single value, here a sum, starting from `0`.
 
 <Exercise title="the QA one-liner">
 Given `const results = [{ name: "Rick", status: "Alive" }, { name: "Birdperson", status: "Dead" }]`, write one line that finds the character whose `name` is `"Rick"` and confirms their `status`. This exact shape of code, `find` then check a field, is what a real API test does in week three. You are writing it a fortnight early.
@@ -141,7 +148,13 @@ A Promise is a value that is not ready yet but will be. `await` pauses inside an
 await getRick();
 // => "Rick Sanchez"`}</CodeFile>
 
-Read it slowly. `fetch` returns a Promise for a response, so you `await` it. Turning that response into JSON is also asynchronous, so you `await` again. Then you reach into the parsed object for `name`. The top-level `await` on the last line works because the Node REPL allows it; inside a real file it lives within the `async` function.
+Read it slowly, one line at a time:
+
+- `fetch` returns a Promise for a response, so you `await` it.
+- Turning that response into JSON is also asynchronous, so you `await` again.
+- Then you reach into the parsed object for `name`.
+
+The top-level `await` on the last line works because the Node REPL allows it. Inside a real file it lives within the `async` function.
 
 <Exercise title="fetch a Pokemon">
 Adapt the example to fetch `https://pokeapi.co/api/v2/pokemon/pikachu` and return the value at `data.name`. When it works, try removing one of the `await` keywords and see what comes back instead. Understanding what breaks is worth as much as understanding what works, and it is exactly the instinct testing rewards.

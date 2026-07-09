@@ -28,6 +28,9 @@ export interface ProgressState {
   version: number;
   steps: Record<string, boolean>;
   portfolio: Record<string, string>;
+  /** Last step id viewed, keyed by codelab slug, so a codelab resumes where
+   *  you left it instead of jumping back to step one. */
+  lastStep: Record<string, string>;
   lastActive: string | null;
   streakDays: number;
 }

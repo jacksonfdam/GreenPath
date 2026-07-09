@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useProgress } from "@/lib/progress";
 import { StepperContext } from "./Stepper";
@@ -14,9 +14,28 @@ interface CodelabViewProps {
   children: ReactNode;
 }
 
-export default function CodelabView({ title, week, steps, children }: CodelabViewProps) {
-  const { isStepDone } = useProgress();
+export default function CodelabView({
+  slug,
+  title,
+  week,
+  steps,
+  children,
+}: CodelabViewProps) {
+  const { isStepDone, hydrated, getLastStep, setLastStep } = useProgress();
   const [activeId, setActiveId] = useState(steps[0]?.id ?? "");
+  const restoredRef = useRef(false);
+
+  // Once progress has loaded, resume at the last step viewed for this codelab
+  // rather than snapping back to step one. Runs once, after hydration.
+  useEffect(() => {
+    if (!hydrated || restoredRef.current) return;
+    restoredRef.current = true;
+    const last = getLastStep(slug);
+    if (last && steps.some((s) => s.id === last)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setActiveId(last);
+    }
+  }, [hydrated, getLastStep, slug, steps]);
 
   const index = steps.findIndex((s) => s.id === activeId);
   const prev = index > 0 ? steps[index - 1] : null;
@@ -24,6 +43,7 @@ export default function CodelabView({ title, week, steps, children }: CodelabVie
 
   function goTo(id: string) {
     setActiveId(id);
+    setLastStep(slug, id);
     if (typeof window !== "undefined") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }

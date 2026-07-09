@@ -74,6 +74,9 @@ commit "feat: add home page with overall progress ring" \
 commit "feat: add codelabs index" \
   app/codelabs/page.tsx components/CodelabsIndex.tsx
 
+commit "feat: add wireframe practice exercise" \
+  components/Wireframes.tsx app/practice/page.tsx
+
 commit "feat: add single codelab route with step-by-step view" \
   components/CodelabView.tsx "app/codelabs/[slug]/page.tsx"
 

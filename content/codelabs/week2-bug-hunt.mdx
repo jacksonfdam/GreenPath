@@ -126,13 +126,26 @@ Write five test cases for SauceDemo using the template above: at least one login
 Prioritising by risk is the difference between a tester and someone who clicks around. Anyone can list a hundred cases. Knowing which ten matter most when the release is tomorrow is the actual job.
 </Callout>
 
+<Callout type="tip">
+Want a warm-up with no app to log into? The [practice exercise](/practice) gives you two wireframe screens and asks you to write test cases in plain language. It is a fast way to build the habit of understanding a product before testing it.
+</Callout>
+
 <Checkpoint id="w2-s3">You have a short test plan and at least five test cases, each with steps, an expected result, and a priority, ordered by risk.</Checkpoint>
 
 </Step>
 
 <Step id="w2-s4" title="Exploratory session and bug reports" minutes={40}>
 
-Scripted cases catch the bugs you predicted. Exploratory testing catches the ones you did not. Set a timer, thirty minutes is plenty, and go looking for trouble with intent: odd inputs, actions in the wrong order, the things a distracted human does. Keep a running note of what you tried and what happened, because you will not remember later.
+Scripted cases catch the bugs you predicted. Exploratory testing catches the ones you did not. Set a timer, thirty minutes is plenty, and go looking for trouble with intent, keeping a running note of what you tried and what happened, because you will not remember later.
+
+But exploratory testing is more than bug-hunting. It is how you learn how the product is actually supposed to work, and that knowledge turns out to be surprisingly rare on a team:
+
+- **You become the person who knows the product.** Developers and project managers will start coming to you with questions, because a lot of them know their own piece but not how the whole thing is meant to behave. Get to know it inside and out, even the small things nobody wrote down. That is where the interesting bugs live.
+- **Push every input to its edges.** If a field has a maximum of 100, try 101. If it takes numbers, try a negative value like -1. Boundaries are where software forgets its manners, which is exactly the boundary value analysis from earlier, done by hand.
+- **Distrust dates.** Dates break products more than almost anything: month ends, leap years, time zones, a start date later than an end date. Always give them a poke.
+- **Check it against the requirements.** When something looks wrong, read what the requirement actually says before you call it a bug. Sometimes the product is right and your assumption is the defect.
+
+For the deepest thinking on this, read James Bach, who helped turn exploratory testing into a proper discipline rather than a euphemism for clicking around: <DocLink href="https://www.satisfice.com/">satisfice.com</DocLink>.
 
 Then write two or three bug reports. A good bug report lets a developer reproduce the problem without phoning you, which is the highest compliment a bug report can earn. Here is one worked all the way through.
 
