@@ -40,6 +40,13 @@ export default function HomePage() {
               See all codelabs
             </Link>
           </div>
+          <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+            New here and not sure where to begin? The{" "}
+            <Link href="/how-to-use" className="text-pass underline underline-offset-2">
+              two-minute guide
+            </Link>{" "}
+            lays out the order and what every part of the site is for.
+          </p>
         </div>
         <div className="justify-self-center md:justify-self-end">
           <OverallRing allStepIds={allStepIds} />

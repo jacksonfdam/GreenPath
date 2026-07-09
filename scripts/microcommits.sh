@@ -71,6 +71,9 @@ commit "feat: add root layout" \
 commit "feat: add home page with overall progress ring" \
   app/page.tsx
 
+commit "feat: add how-to-use guide with journey map" \
+  components/JourneyMap.tsx app/how-to-use/page.tsx
+
 commit "feat: add codelabs index" \
   app/codelabs/page.tsx components/CodelabsIndex.tsx
 

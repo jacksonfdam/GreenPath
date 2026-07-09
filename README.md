@@ -62,6 +62,7 @@ Push to a public GitHub repo, then import it at
 ## Routes
 
 - `/` home, with the overall progress ring
+- `/how-to-use` the order to follow and what every section is for
 - `/setup` install every tool the course needs, in order
 - `/codelabs` the index of all seven
 - `/codelabs/[slug]` a single codelab, one step at a time
